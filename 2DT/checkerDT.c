@@ -10,16 +10,16 @@
 #include "dynarray.h"
 #include "path.h"
 
-
-
 /* see checkerDT.h for specification */
-boolean CheckerDT_Node_isValid(Node_T oNNode) {
+boolean CheckerDT_Node_isValid(Node_T oNNode)
+{
    Node_T oNParent;
    Path_T oPNPath;
    Path_T oPPPath;
 
    /* Sample check: a NULL pointer is not a valid node */
-   if(oNNode == NULL) {
+   if (oNNode == NULL)
+   {
       fprintf(stderr, "A node is a NULL pointer\n");
       return FALSE;
    }
@@ -27,12 +27,14 @@ boolean CheckerDT_Node_isValid(Node_T oNNode) {
    /* Sample check: parent's path must be the longest possible
       proper prefix of the node's path */
    oNParent = Node_getParent(oNNode);
-   if(oNParent != NULL) {
+   if (oNParent != NULL)
+   {
       oPNPath = Node_getPath(oNNode);
       oPPPath = Node_getPath(oNParent);
 
-      if(Path_getSharedPrefixDepth(oPNPath, oPPPath) !=
-         Path_getDepth(oPNPath) - 1) {
+      if (Path_getSharedPrefixDepth(oPNPath, oPPPath) !=
+          Path_getDepth(oPNPath) - 1)
+      {
          fprintf(stderr, "P-C nodes don't have P-C paths: (%s) (%s)\n",
                  Path_getPathname(oPPPath), Path_getPathname(oPNPath));
          return FALSE;
@@ -51,30 +53,47 @@ boolean CheckerDT_Node_isValid(Node_T oNNode) {
    parameter list to facilitate constructing your checks.
    If you do, you should update this function comment.
 */
-static boolean CheckerDT_treeCheck(Node_T oNNode) {
+static boolean CheckerDT_treeCheck(Node_T oNNode)
+{
    size_t ulIndex;
+   size_t count = 0;
+   Path_T paths[100]; /* how would i change array size */
 
-   if(oNNode!= NULL) {
-
+   if (oNNode != NULL)
+   {
       /* Sample check on each node: node must be valid */
       /* If not, pass that failure back up immediately */
-      if(!CheckerDT_Node_isValid(oNNode))
+      if (!CheckerDT_Node_isValid(oNNode))
          return FALSE;
 
+      if (!CheckerDT_checkUniquePaths(oNNode, paths, &count))
+         return FALSE;
+
+      Path_T oPath = Node_getPath(oNNode);
+      char expectedFormat[] = "a\na/x\na/y\n";
+      char temp[256];
+      fprintf(temp, sizeof(temp), "%s", Path_getPathname(oPath));
+      if (strcmp(temp, expectedFormat) != 0)
+      {
+         fprintf(stderr, "Unexpected format: got %s, expected %s\n", temp, expectedFormat);
+         return FALSE;
+      }
+
       /* Recur on every child of oNNode */
-      for(ulIndex = 0; ulIndex < Node_getNumChildren(oNNode); ulIndex++)
+      for (ulIndex = 0; ulIndex < Node_getNumChildren(oNNode); ulIndex++)
       {
          Node_T oNChild = NULL;
          int iStatus = Node_getChild(oNNode, ulIndex, &oNChild);
 
-         if(iStatus != SUCCESS) {
+         if (iStatus != SUCCESS)
+         {
             fprintf(stderr, "getNumChildren claims more children than getChild returns\n");
             return FALSE;
          }
 
          /* if recurring down one subtree results in a failed check
             farther down, passes the failure back up immediately */
-         if(!CheckerDT_treeCheck(oNChild))
+         if (!CheckerDT_treeCheck(oNChild))
             return FALSE;
       }
    }
@@ -83,16 +102,49 @@ static boolean CheckerDT_treeCheck(Node_T oNNode) {
 
 /* see checkerDT.h for specification */
 boolean CheckerDT_isValid(boolean bIsInitialized, Node_T oNRoot,
-                          size_t ulCount) {
+                          size_t ulCount)
+{
 
    /* Sample check on a top-level data structure invariant:
       if the DT is not initialized, its count should be 0. */
-   if(!bIsInitialized)
-      if(ulCount != 0) {
+   if (!bIsInitialized)
+      if (ulCount != 0)
+      {
          fprintf(stderr, "Not initialized, but count is not 0\n");
          return FALSE;
       }
 
    /* Now checks invariants recursively at each node from the root. */
    return CheckerDT_treeCheck(oNRoot);
+}
+
+/* first modification: checking for a path that already exists
+       and would be a duplicate */
+static boolean CheckerDT_checkUniquePaths(Node_T oNNode, Path_T *paths, size_t *count)
+{
+   if (oNNode == NULL)
+      return TRUE;
+
+   Path_T oNodePath = Node_getPath(oNNode);
+
+   for (size_t i = 0; i < *count; i++)
+   {
+      if (Path_compare(paths[i], oNodePath) == 0)
+      {
+         fprintf(stderr, "Duplicate path found: %s\n", Path_getPathname(oNodePath));
+         return FALSE;
+      }
+   }
+
+   paths[(*count)++] = oNodePath;
+
+   size_t numChildren = Node_getNumChildren(oNNode);
+   for (size_t i = 0; i < numChildren; i++)
+   {
+      Node_T oChild;
+      if (Node_getChild(oNNode, i, &oChild) != SUCCESS || !CheckerDT_checkUniquePaths(oChild, paths, count))
+         return FALSE;
+   }
+
+   return TRUE;
 }

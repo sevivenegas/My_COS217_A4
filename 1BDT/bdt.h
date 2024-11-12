@@ -68,7 +68,7 @@ int BDT_destroy(void);
   not initialized or there is an allocation error.
 
   The representation is depth-first, with nodes
-  at any given level ordered first ("left") child 
+  at any given level ordered first ("left") child
   before second ("right") child.
 
   Allocates memory for the returned string,

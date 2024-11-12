@@ -3,12 +3,12 @@ Assignment 4 readme File
 ------------------------------------------------------------------------
 Student 1: What is your name?
 
-
+Neha Ayyalapu
 
 ------------------------------------------------------------------------
 Student 2: What is your name?
 
-
+Sevastian Venegas
 
 ------------------------------------------------------------------------
 Student 1: What authorized sources of information did you use to
@@ -64,7 +64,7 @@ guide, enter your name in the space below the following affirmation:
 This paper represents my own work in accordance with University
 regulations.
 
-
+Neha Ayyalapu
 
 ------------------------------------------------------------------------
 Student 2: In fulfillment of the requirement from section 2.4.3 of the
@@ -137,7 +137,7 @@ the error manifests itself or is "noticed" by the client.
 
       Executable         Function with the underlying error
 ===============================================================
-         ./bdtBad1        
+         ./bdtBad1       BDT_insert 
 ---------------------------------------------------------------
          ./bdtBad2        
 ---------------------------------------------------------------
