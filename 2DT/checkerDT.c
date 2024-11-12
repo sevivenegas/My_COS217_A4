@@ -69,16 +69,6 @@ static boolean CheckerDT_treeCheck(Node_T oNNode)
       if (!CheckerDT_checkUniquePaths(oNNode, paths, &count))
          return FALSE;
 
-      Path_T oPath = Node_getPath(oNNode);
-      char expectedFormat[] = "a\na/x\na/y\n";
-      char temp[256];
-      fprintf(temp, sizeof(temp), "%s", Path_getPathname(oPath));
-      if (strcmp(temp, expectedFormat) != 0)
-      {
-         fprintf(stderr, "Unexpected format: got %s, expected %s\n", temp, expectedFormat);
-         return FALSE;
-      }
-
       /* Recur on every child of oNNode */
       for (ulIndex = 0; ulIndex < Node_getNumChildren(oNNode); ulIndex++)
       {
@@ -122,9 +112,6 @@ boolean CheckerDT_isValid(boolean bIsInitialized, Node_T oNRoot,
        and would be a duplicate */
 static boolean CheckerDT_checkUniquePaths(Node_T oNNode, Path_T *paths, size_t *count)
 {
-   if (oNNode == NULL)
-      return TRUE;
-
    Path_T oNodePath = Node_getPath(oNNode);
 
    for (size_t i = 0; i < *count; i++)
@@ -135,16 +122,8 @@ static boolean CheckerDT_checkUniquePaths(Node_T oNNode, Path_T *paths, size_t *
          return FALSE;
       }
    }
-
-   paths[(*count)++] = oNodePath;
-
-   size_t numChildren = Node_getNumChildren(oNNode);
-   for (size_t i = 0; i < numChildren; i++)
-   {
-      Node_T oChild;
-      if (Node_getChild(oNNode, i, &oChild) != SUCCESS || !CheckerDT_checkUniquePaths(oChild, paths, count))
-         return FALSE;
-   }
+   paths[*count] = oNodePath;
+   (*count)++;
 
    return TRUE;
 }
