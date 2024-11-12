@@ -66,7 +66,6 @@ static boolean CheckerDT_treeCheck(Node_T oNNode)
       if (!CheckerDT_Node_isValid(oNNode))
          return FALSE;
 
-      // path formatting
       if (!CheckerDT_checkPath(oNNode))
          return FALSE;
 
