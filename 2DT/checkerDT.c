@@ -10,6 +10,8 @@
 #include "dynarray.h"
 #include "path.h"
 
+static boolean CheckerDT_checkPath(Node_T oNNode);
+
 /* see checkerDT.h for specification */
 boolean CheckerDT_Node_isValid(Node_T oNNode)
 {
@@ -56,8 +58,6 @@ boolean CheckerDT_Node_isValid(Node_T oNNode)
 static boolean CheckerDT_treeCheck(Node_T oNNode)
 {
    size_t ulIndex;
-   size_t count = 0;
-   Path_T paths[100]; /* how would i change array size */
 
    if (oNNode != NULL)
    {
@@ -107,24 +107,6 @@ boolean CheckerDT_isValid(boolean bIsInitialized, Node_T oNRoot,
    /* Now checks invariants recursively at each node from the root. */
    return CheckerDT_treeCheck(oNRoot);
 }
-
-/* another error: array out of bounds
-static boolean CheckerDT_arrayIndex(Node_T oNNode)
-{
-   size_t numChildren = Node_getNumChildren(oNNode);
-   for (size_t i = 0; i < numChildren; i++)
-   {
-      Node_T oChild;
-      int status = Node_getChild(oNNode, i, &oChild);
-      if (status != SUCCESS)
-      {
-         fprintf(stderr, "Array index out of bounds at index %zu\n", i);
-         return FALSE;
-      }
-   }
-   return TRUE;
-}
-*/
 
 /* check that path name is valid */
 static boolean CheckerDT_checkPath(Node_T oNNode)
