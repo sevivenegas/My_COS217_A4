@@ -66,16 +66,8 @@ static boolean CheckerDT_treeCheck(Node_T oNNode)
       if (!CheckerDT_Node_isValid(oNNode))
          return FALSE;
 
-      // bounds
-      if (!CheckerDT_arrayBound(oNNode))
-         return FALSE;
-
       // path formatting
       if (!CheckerDT_checkPath(oNNode))
-         return FALSE;
-
-      // duplicates... this is def very wrong but idk
-      if (!CheckerDT_checkUniquePaths(oNNode, paths, &count))
          return FALSE;
 
       /* Recur on every child of oNNode */
@@ -117,8 +109,8 @@ boolean CheckerDT_isValid(boolean bIsInitialized, Node_T oNRoot,
    return CheckerDT_treeCheck(oNRoot);
 }
 
-/* another error: array out of bounds */
-static boolean CheckerDT_arrayBound(Node_T oNNode)
+/* another error: array out of bounds
+static boolean CheckerDT_arrayIndex(Node_T oNNode)
 {
    size_t numChildren = Node_getNumChildren(oNNode);
    for (size_t i = 0; i < numChildren; i++)
@@ -133,8 +125,9 @@ static boolean CheckerDT_arrayBound(Node_T oNNode)
    }
    return TRUE;
 }
+*/
 
-/* check that path name is good */
+/* check that path name is valid */
 static boolean CheckerDT_checkPath(Node_T oNNode)
 {
    Path_T oNodePath = Node_getPath(oNNode);
@@ -150,7 +143,7 @@ static boolean CheckerDT_checkPath(Node_T oNNode)
 }
 
 /* first modification: checking for a path that already exists
-       and would be a duplicate */
+       and would be a duplicate
 static boolean CheckerDT_checkUniquePaths(Node_T oNNode, Path_T *paths, size_t *count)
 {
    Path_T oNodePath = Node_getPath(oNNode);
@@ -167,4 +160,4 @@ static boolean CheckerDT_checkUniquePaths(Node_T oNNode, Path_T *paths, size_t *
    (*count)++;
 
    return TRUE;
-}
+} */
