@@ -111,24 +111,41 @@ boolean CheckerDT_isValid(boolean bIsInitialized, Node_T oNRoot,
 /* check that path name is valid */
 static boolean CheckerDT_checkPath(Node_T oNNode)
 {
-   if (oNNode != NULL)
+   Path_T oNodePath = Node_getPath(oNNode);
+   const char *pathname = Path_getPathname(oNodePath);
+
+   Node_T oNParent = Node_getParent(oNNode);
+   if (oNParent != NULL)
+   {
+      Path_T oParentPath = Node_getPath(oNParent);
+      const char *parentPathname = Path_getPathname(oParentPath);
+
+      // Ensure the parent path comes lexicographically before this path (if they are on the same level)
+      if (strcmp(parentPathname, pathname) >= 0)
+      {
+         fprintf(stderr, "Path is not lexicographically ordered under parent: %s comes after %s\n", pathname, parentPathname);
+         return FALSE;
+      }
+   }
+
+   /* if (oNNode != NULL)
    {
       Path_T oNodePath = Node_getPath(oNNode);
       const char *pathname = Path_getPathname(oNodePath);
 
       if (pathname[0] != '/')
       {
-         fprintf(stderr, "Path does not start with a root '/': %s\n", pathname);
+         fprintf(stderr, "Path does not start with a root '/': %s", pathname);
          return FALSE;
       }
-   }
+   } */
 
    return TRUE;
 }
 
 /* first modification: checking for a path that already exists
        and would be a duplicate
-static boolean CheckerDT_checkUniquePaths(Node_T oNNode, Path_T *paths, size_t *count)
+static boolean CheckerDT_checkUniquePaths(some params)
 {
    Path_T oNodePath = Node_getPath(oNNode);
 
@@ -140,8 +157,8 @@ static boolean CheckerDT_checkUniquePaths(Node_T oNNode, Path_T *paths, size_t *
          return FALSE;
       }
    }
-   paths[*count] = oNodePath;
-   (*count)++;
+   paths[count] = oNodePath;
+   (count)++;
 
    return TRUE;
 } */
