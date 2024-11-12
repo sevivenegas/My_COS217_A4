@@ -129,13 +129,16 @@ static boolean CheckerDT_arrayIndex(Node_T oNNode)
 /* check that path name is valid */
 static boolean CheckerDT_checkPath(Node_T oNNode)
 {
-   Path_T oNodePath = Node_getPath(oNNode);
-   const char *pathname = Path_getPathname(oNodePath);
-
-   if (pathname[0] != '/')
+   if (oNNode != NULL)
    {
-      fprintf(stderr, "Path does not start with a root '/': %s\n", pathname);
-      return FALSE;
+      Path_T oNodePath = Node_getPath(oNNode);
+      const char *pathname = Path_getPathname(oNodePath);
+
+      if (pathname[0] != '/')
+      {
+         fprintf(stderr, "Path does not start with a root '/': %s\n", pathname);
+         return FALSE;
+      }
    }
 
    return TRUE;
