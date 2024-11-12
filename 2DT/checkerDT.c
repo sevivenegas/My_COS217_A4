@@ -66,6 +66,15 @@ static boolean CheckerDT_treeCheck(Node_T oNNode)
       if (!CheckerDT_Node_isValid(oNNode))
          return FALSE;
 
+      // bounds
+      if (!CheckerDT_arrayBound(oNNode))
+         return FALSE;
+
+      // path formatting
+      if (!CheckerDT_checkPath(oNNode))
+         return FALSE;
+
+      // duplicates... this is def very wrong but idk
       if (!CheckerDT_checkUniquePaths(oNNode, paths, &count))
          return FALSE;
 
@@ -106,6 +115,38 @@ boolean CheckerDT_isValid(boolean bIsInitialized, Node_T oNRoot,
 
    /* Now checks invariants recursively at each node from the root. */
    return CheckerDT_treeCheck(oNRoot);
+}
+
+/* another error: array out of bounds */
+static boolean CheckerDT_arrayBound(Node_T oNNode)
+{
+   size_t numChildren = Node_getNumChildren(oNNode);
+   for (size_t i = 0; i < numChildren; i++)
+   {
+      Node_T oChild;
+      int status = Node_getChild(oNNode, i, &oChild);
+      if (status != SUCCESS)
+      {
+         fprintf(stderr, "Array index out of bounds at index %zu\n", i);
+         return FALSE;
+      }
+   }
+   return TRUE;
+}
+
+/* check that path name is good */
+static boolean CheckerDT_checkPath(Node_T oNNode)
+{
+   Path_T oNodePath = Node_getPath(oNNode);
+   const char *pathname = Path_getPathname(oNodePath);
+
+   if (pathname[0] != '/')
+   {
+      fprintf(stderr, "Path does not start with a root '/': %s\n", pathname);
+      return FALSE;
+   }
+
+   return TRUE;
 }
 
 /* first modification: checking for a path that already exists
