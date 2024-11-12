@@ -120,7 +120,6 @@ static boolean CheckerDT_checkPath(Node_T oNNode)
       Path_T oParentPath = Node_getPath(oNParent);
       const char *parentPathname = Path_getPathname(oParentPath);
 
-      // Ensure the parent path comes lexicographically before this path (if they are on the same level)
       if (strcmp(parentPathname, pathname) >= 0)
       {
          fprintf(stderr, "Path is not lexicographically ordered under parent: %s comes after %s\n", pathname, parentPathname);
