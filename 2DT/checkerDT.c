@@ -114,6 +114,7 @@ static boolean CheckerDT_checkPath(Node_T oNNode)
    Path_T oNodePath = Node_getPath(oNNode);
    const char *pathname = Path_getPathname(oNodePath);
 
+   /* this is all wrong i misunderstood soemthing
    Node_T oNParent = Node_getParent(oNNode);
    if (oNParent != NULL)
    {
@@ -122,19 +123,7 @@ static boolean CheckerDT_checkPath(Node_T oNNode)
 
       if (strcmp(parentPathname, pathname) >= 0)
       {
-         fprintf(stderr, "Path is not lexicographically ordered under parent: %s comes after %s\n", pathname, parentPathname);
-         return FALSE;
-      }
-   }
-
-   /* if (oNNode != NULL)
-   {
-      Path_T oNodePath = Node_getPath(oNNode);
-      const char *pathname = Path_getPathname(oNodePath);
-
-      if (pathname[0] != '/')
-      {
-         fprintf(stderr, "Path does not start with a root '/': %s", pathname);
+         fprintf(stderr, "path is not lexicographically ordered");
          return FALSE;
       }
    } */
@@ -143,21 +132,21 @@ static boolean CheckerDT_checkPath(Node_T oNNode)
 }
 
 /* first modification: checking for a path that already exists
-       and would be a duplicate
+       and would be a duplicate. also def all wrong.
 static boolean CheckerDT_checkUniquePaths(some params)
 {
    Path_T oNodePath = Node_getPath(oNNode);
 
-   for (size_t i = 0; i < *count; i++)
+   for (size_t i = 0; i < count; i++)
    {
       if (Path_compare(paths[i], oNodePath) == 0)
       {
-         fprintf(stderr, "Duplicate path found: %s\n", Path_getPathname(oNodePath));
+         fprintf(stderr, "Duplicate path found");
          return FALSE;
       }
    }
    paths[count] = oNodePath;
-   (count)++;
+   count++;
 
    return TRUE;
 } */
