@@ -78,6 +78,7 @@ static boolean CheckerDT_treeCheck(Node_T oNNode)
       for (ulIndex = 0; ulIndex < Node_getNumChildren(oNNode); ulIndex++)
       {
          Node_T oNChild = NULL;
+         size_t nlIndex;
          int iStatus = Node_getChild(oNNode, ulIndex, &oNChild);
 
          if (iStatus != SUCCESS)
@@ -91,7 +92,6 @@ static boolean CheckerDT_treeCheck(Node_T oNNode)
          if (!CheckerDT_treeCheck(oNChild))
             return FALSE;
 
-         size_t nlIndex;
          for (nlIndex = ulIndex + 1; nlIndex < Node_getNumChildren(oNNode); nlIndex++)
          {
             Node_T NChild = NULL;
@@ -99,7 +99,7 @@ static boolean CheckerDT_treeCheck(Node_T oNNode)
             if (Node_getChild(oNNode, nlIndex, &NChild) == SUCCESS)
             {
                {
-                  if (Path_compareString(Node_getPath(oNChild), Node_getPath(NChild)) == 0)
+                  if (Path_comparePath(Node_getPath(oNChild), Node_getPath(NChild)) == 0)
                   {
                      fprintf(stderr, "Duplicate path detected");
                      return FALSE;
