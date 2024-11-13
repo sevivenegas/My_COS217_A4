@@ -43,11 +43,10 @@ boolean CheckerDT_Node_isValid(Node_T oNNode)
          return FALSE;
       }
 
-      indexOfChild = 0;
-      if(Node_hasChild(oNParent, oPNPath, &indexOfChild)) {
+      /*if(Node_hasChild(oNParent, oPNPath, &indexOfChild)) {
          fprintf(stderr, "Sample tests if there is a duplicate that is going to be added change later");
          return FALSE;
-      }
+      }*/
    }
 
    return TRUE;
@@ -92,6 +91,17 @@ static boolean CheckerDT_treeCheck(Node_T oNNode)
             farther down, passes the failure back up immediately */
          if (!CheckerDT_treeCheck(oNChild))
             return FALSE;
+
+         size_t nlIndex;
+         for(nlIndex = ulIndex + 1; nlIndex < Node_getNumChildren(oNNode); nlIndex++)
+         {
+            Node_T NChild = NULL;
+            Node_getChild(oNNode, ulIndex, &NChild);
+            if(Path_compareString(oNChild, NChild) == 0){
+               fprintf(stderr, "REPEAT CHANGE MESSAGE LATER");
+               return FALSE;
+            }
+         }
       }
    }
    return TRUE;
