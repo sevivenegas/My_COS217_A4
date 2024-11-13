@@ -18,6 +18,7 @@ boolean CheckerDT_Node_isValid(Node_T oNNode)
    Node_T oNParent;
    Path_T oPNPath;
    Path_T oPPPath;
+   size_t indexOfChild;
 
    /* Sample check: a NULL pointer is not a valid node */
    if (oNNode == NULL)
@@ -41,6 +42,12 @@ boolean CheckerDT_Node_isValid(Node_T oNNode)
                  Path_getPathname(oPPPath), Path_getPathname(oPNPath));
          return FALSE;
       }
+   }
+
+   indexOfChild = NULL;
+   if(Node_hasChild(oNParent, oPNPath, &indexOfChild)) {
+         fprintf(stderr, "Sample tests if there is a duplicate that is going to be added change later");
+         return FALSE;
    }
 
    return TRUE;
@@ -133,7 +140,7 @@ static boolean CheckerDT_checkPath(Node_T oNNode)
 
 /* first modification: checking for a path that already exists
        and would be a duplicate. also def all wrong.
-static boolean CheckerDT_checkUniquePaths(some params)
+static boolean CheckerDT_checkUniquePaths(Node_T onRoot, Node_T oNNode)
 {
    Path_T oNodePath = Node_getPath(oNNode);
 
@@ -149,4 +156,4 @@ static boolean CheckerDT_checkUniquePaths(some params)
    count++;
 
    return TRUE;
-} */
+}*/
