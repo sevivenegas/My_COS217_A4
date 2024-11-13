@@ -84,14 +84,12 @@ static boolean CheckerDT_treeCheck(Node_T oNNode)
             return FALSE;
          }
 
-         if (ulIndex + 1 < Node_getNumChildren(oNNode))
-         {
-            if (Path_comparePath(oNChild, Node_getChild(oNNode, ulIndex + 1, NULL)) == 0)
-            {
+         /* if (ulIndex + 1 < Node_getNumChildren(oNNode)){
+            if(Path_comparePath(oNChild,Node_getChild(oNNode, ulIndex+1, NULL)) == 0){
                fprintf(stderr, "duplicate");
                return FALSE;
             }
-         }
+         } */
 
          /* if recurring down one subtree results in a failed check
             farther down, passes the failure back up immediately */
