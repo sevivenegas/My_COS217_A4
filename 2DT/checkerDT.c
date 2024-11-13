@@ -18,7 +18,6 @@ boolean CheckerDT_Node_isValid(Node_T oNNode)
    Node_T oNParent;
    Path_T oPNPath;
    Path_T oPPPath;
-   size_t indexOfChild;
 
    /* Sample check: a NULL pointer is not a valid node */
    if (oNNode == NULL)
@@ -96,8 +95,9 @@ static boolean CheckerDT_treeCheck(Node_T oNNode)
          for(nlIndex = ulIndex + 1; nlIndex < Node_getNumChildren(oNNode); nlIndex++)
          {
             Node_T NChild = NULL;
+            
             Node_getChild(oNNode, ulIndex, &NChild);
-            if(Path_compareString(oNChild, NChild) == 0){
+            if(Path_compareString(Node_getPath(oNChild), Node_getPath(NChild)) == 0){
                fprintf(stderr, "REPEAT CHANGE MESSAGE LATER");
                return FALSE;
             }
