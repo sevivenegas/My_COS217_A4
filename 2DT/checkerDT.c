@@ -92,19 +92,24 @@ static boolean CheckerDT_treeCheck(Node_T oNNode)
             return FALSE;
 
          size_t nlIndex;
-         for(nlIndex = ulIndex + 1; nlIndex < Node_getNumChildren(oNNode); nlIndex++)
+         for (nlIndex = ulIndex + 1; nlIndex < Node_getNumChildren(oNNode); nlIndex++)
          {
             Node_T NChild = NULL;
-            
-            Node_getChild(oNNode, ulIndex, &NChild);
-            if(Path_compareString(Node_getPath(oNChild), Node_getPath(NChild)) == 0){
-               fprintf(stderr, "REPEAT CHANGE MESSAGE LATER");
-               return FALSE;
+
+            if (Node_getChild(oNNode, nlIndex, &NChild) == SUCCESS)
+            {
+               {
+                  if (Path_compareString(Node_getPath(oNChild), Node_getPath(NChild)) == 0)
+                  {
+                     fprintf(stderr, "Duplicate path detected");
+                     return FALSE;
+                  }
+               }
             }
          }
       }
+      return TRUE;
    }
-   return TRUE;
 }
 
 /* see checkerDT.h for specification */
@@ -147,23 +152,3 @@ static boolean CheckerDT_checkPath(Node_T oNNode)
 
    return TRUE;
 }
-
-/* first modification: checking for a path that already exists
-       and would be a duplicate. also def all wrong.
-static boolean CheckerDT_checkUniquePaths(Node_T onRoot, Node_T oNNode)
-{
-   Path_T oNodePath = Node_getPath(oNNode);
-
-   for (size_t i = 0; i < count; i++)
-   {
-      if (Path_compare(paths[i], oNodePath) == 0)
-      {
-         fprintf(stderr, "Duplicate path found");
-         return FALSE;
-      }
-   }
-   paths[count] = oNodePath;
-   count++;
-
-   return TRUE;
-}*/
