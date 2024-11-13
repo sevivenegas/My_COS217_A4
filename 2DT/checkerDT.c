@@ -44,7 +44,7 @@ boolean CheckerDT_Node_isValid(Node_T oNNode)
       }
    }
    indexOfChild = 0;
-   if(Node_hasChild(oNParent, oPNPath, &indexOfChild)) {
+   if(oNParent != NULL && Node_hasChild(oNParent, oPNPath, &indexOfChild)) {
          fprintf(stderr, "Sample tests if there is a duplicate that is going to be added change later");
          return FALSE;
    }
