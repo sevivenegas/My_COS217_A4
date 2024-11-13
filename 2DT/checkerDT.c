@@ -86,27 +86,20 @@ static boolean CheckerDT_treeCheck(Node_T oNNode)
             fprintf(stderr, "getNumChildren claims more children than getChild returns\n");
             return FALSE;
          }
+         if(ulIndex + 1 < Node_getNumChildren(oNNode)){
+            if(Path_comparePath(oNChild,Node_getChild(oNNode, ulIndex+1, NULL)) == 0){
+               fprintf(stderr, "duplicate");
+               return FALSE;
+            }
+         }
+         
 
          /* if recurring down one subtree results in a failed check
             farther down, passes the failure back up immediately */
          if (!CheckerDT_treeCheck(oNChild))
             return FALSE;
+   
 
-         for (nlIndex = ulIndex + 1; nlIndex < Node_getNumChildren(oNNode); nlIndex++)
-         {
-            Node_T NChild = NULL;
-
-            if (Node_getChild(oNNode, nlIndex, &NChild) == SUCCESS)
-            {
-               {
-                  if (Path_comparePath(Node_getPath(oNChild), Node_getPath(NChild)) == 0)
-                  {
-                     fprintf(stderr, "Duplicate path detected");
-                     return FALSE;
-                  }
-               }
-            }
-         }
       }
       return TRUE;
    }
