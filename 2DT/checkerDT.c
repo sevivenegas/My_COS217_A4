@@ -71,9 +71,6 @@ static boolean CheckerDT_treeCheck(Node_T oNNode)
       if (!CheckerDT_Node_isValid(oNNode))
          return FALSE;
 
-      if (!CheckerDT_checkPath(oNNode))
-         return FALSE;
-
       /* Recur on every child of oNNode */
       for (ulIndex = 0; ulIndex < Node_getNumChildren(oNNode); ulIndex++)
       {
@@ -86,20 +83,20 @@ static boolean CheckerDT_treeCheck(Node_T oNNode)
             fprintf(stderr, "getNumChildren claims more children than getChild returns\n");
             return FALSE;
          }
-         if(ulIndex + 1 < Node_getNumChildren(oNNode)){
-            if(Path_comparePath(oNChild,Node_getChild(oNNode, ulIndex+1, NULL)) == 0){
+
+         if (ulIndex + 1 < Node_getNumChildren(oNNode))
+         {
+            if (Path_comparePath(oNChild, Node_getChild(oNNode, ulIndex + 1, NULL)) == 0)
+            {
                fprintf(stderr, "duplicate");
                return FALSE;
             }
          }
-         
 
          /* if recurring down one subtree results in a failed check
             farther down, passes the failure back up immediately */
          if (!CheckerDT_treeCheck(oNChild))
             return FALSE;
-   
-
       }
       return TRUE;
    }
@@ -121,27 +118,4 @@ boolean CheckerDT_isValid(boolean bIsInitialized, Node_T oNRoot,
 
    /* Now checks invariants recursively at each node from the root. */
    return CheckerDT_treeCheck(oNRoot);
-}
-
-/* check that path name is valid */
-static boolean CheckerDT_checkPath(Node_T oNNode)
-{
-   Path_T oNodePath = Node_getPath(oNNode);
-   const char *pathname = Path_getPathname(oNodePath);
-
-   /* this is all wrong i misunderstood soemthing
-   Node_T oNParent = Node_getParent(oNNode);
-   if (oNParent != NULL)
-   {
-      Path_T oParentPath = Node_getPath(oNParent);
-      const char *parentPathname = Path_getPathname(oParentPath);
-
-      if (strcmp(parentPathname, pathname) >= 0)
-      {
-         fprintf(stderr, "path is not lexicographically ordered");
-         return FALSE;
-      }
-   } */
-
-   return TRUE;
 }
