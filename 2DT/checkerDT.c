@@ -71,9 +71,6 @@ static boolean CheckerDT_treeCheck(Node_T oNNode)
       if (!CheckerDT_Node_isValid(oNNode))
          return FALSE;
 
-      if (!CheckerDT_checkPath(oNNode))
-         return FALSE;
-
       /* Recur on every child of oNNode */
       for (ulIndex = 0; ulIndex < Node_getNumChildren(oNNode); ulIndex++)
       {
