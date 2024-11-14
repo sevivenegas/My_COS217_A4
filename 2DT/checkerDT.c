@@ -145,7 +145,7 @@ static size_t CheckerDT_countNodes(Node_T oNNode)
    for (index = 0; index < numChildren; index++)
    {
       Node_T oNChild = NULL;
-      if (Node_getChild(oNNode, index, &oNChild) == SUCCESS && oNChild != NULL)
+      if (Node_getChild(oNNode, index, &oNChild) == SUCCESS)
       {
          nodeCount += CheckerDT_countNodes(oNChild);
       }
