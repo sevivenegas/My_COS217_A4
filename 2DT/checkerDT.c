@@ -135,12 +135,12 @@ boolean CheckerDT_isValid(boolean bIsInitialized, Node_T oNRoot,
 
 static size_t CheckerDT_countNodes(Node_T oNNode)
 {
-   if (oNNode == NULL)
-      return 0;
-
    size_t nodeCount = 1;
    size_t numChildren = Node_getNumChildren(oNNode);
    size_t index;
+   
+   if (oNNode == NULL)
+      return 0;
 
    for (index = 0; index < numChildren; index++)
    {
