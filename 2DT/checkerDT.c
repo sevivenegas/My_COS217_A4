@@ -80,7 +80,6 @@ static boolean CheckerDT_treeCheck(Node_T oNNode)
             return FALSE;
          }
 
-         /*
          if (oNChild2 != NULL)
          {
             if (Path_comparePath(Node_getPath(oNChild), Node_getPath(oNChild2)) == 0)
@@ -94,7 +93,7 @@ static boolean CheckerDT_treeCheck(Node_T oNNode)
                fprintf(stderr, "Not in lexicographic order\n");
                return FALSE;
             }
-         } */
+         }
 
          /* if recurring down one subtree results in a failed check
             farther down, passes the failure back up immediately */
