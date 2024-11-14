@@ -84,13 +84,13 @@ static boolean CheckerDT_treeCheck(Node_T oNNode)
          {
             if (Path_comparePath(Node_getPath(oNChild), Node_getPath(oNChild2)) == 0)
             {
-               fprintf(stderr, "duplicate\n");
+               fprintf(stderr, "Inserting duplicate node, path already exists\n");
                return FALSE;
             }
 
-            if (Node_compare(oNChild, oNChild2) >= 0)
+            if (Node_compare(oNChild, oNChild2) <= 0)
             {
-               fprintf(stderr, "not in lexicographic order\n");
+               fprintf(stderr, "Not in lexicographic order\n");
                return FALSE;
             }
          }
