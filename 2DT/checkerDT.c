@@ -10,6 +10,8 @@
 #include "dynarray.h"
 #include "path.h"
 
+static size_t CheckerDT_countNodes(Node_T oNNode);
+
 /* see checkerDT.h for specification */
 boolean CheckerDT_Node_isValid(Node_T oNNode)
 {
@@ -108,6 +110,7 @@ static boolean CheckerDT_treeCheck(Node_T oNNode)
 boolean CheckerDT_isValid(boolean bIsInitialized, Node_T oNRoot,
                           size_t ulCount)
 {
+   size_t nodeCount;
    /* Sample check on a top-level data structure invariant:
       if the DT is not initialized, its count should be 0. */
    if (!bIsInitialized)
@@ -122,7 +125,7 @@ boolean CheckerDT_isValid(boolean bIsInitialized, Node_T oNRoot,
    /* Now checks invariants recursively at each node from the root. */
    return CheckerDT_treeCheck(oNRoot);
 
-   size_t nodeCount = CheckerDT_countNodes(oNRoot);
+   nodeCount = CheckerDT_countNodes(oNRoot);
    if (nodeCount != ulCount)
    {
       fprintf(stderr, "Node count and ulCount mismatch");
