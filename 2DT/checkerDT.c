@@ -1,6 +1,6 @@
 /*--------------------------------------------------------------------*/
 /* checkerDT.c                                                        */
-/* Author:                                                            */
+/* Author: Neha & Sevastian                                           */
 /*--------------------------------------------------------------------*/
 
 #include <assert.h>
@@ -9,8 +9,6 @@
 #include "checkerDT.h"
 #include "dynarray.h"
 #include "path.h"
-
-static boolean CheckerDT_checkPath(Node_T oNNode);
 
 /* see checkerDT.h for specification */
 boolean CheckerDT_Node_isValid(Node_T oNNode)
@@ -41,11 +39,6 @@ boolean CheckerDT_Node_isValid(Node_T oNNode)
                  Path_getPathname(oPPPath), Path_getPathname(oPNPath));
          return FALSE;
       }
-
-      /*if(Node_hasChild(oNParent, oPNPath, &indexOfChild)) {
-         fprintf(stderr, "Sample tests if there is a duplicate that is going to be added change later");
-         return FALSE;
-      }*/
    }
 
    return TRUE;
@@ -66,6 +59,7 @@ static boolean CheckerDT_treeCheck(Node_T oNNode)
 
    if (oNNode != NULL)
    {
+
       /* Sample check on each node: node must be valid */
       /* If not, pass that failure back up immediately */
       if (!CheckerDT_Node_isValid(oNNode))
@@ -75,12 +69,20 @@ static boolean CheckerDT_treeCheck(Node_T oNNode)
       for (ulIndex = 0; ulIndex < Node_getNumChildren(oNNode); ulIndex++)
       {
          Node_T oNChild = NULL;
-         size_t nlIndex;
+         Node_T oNChild2 = NULL;
+
          int iStatus = Node_getChild(oNNode, ulIndex, &oNChild);
+         int iStatus2 = Node_getChild(oNNode, ulIndex + 1, &oNChild2);
 
          if (iStatus != SUCCESS)
          {
             fprintf(stderr, "getNumChildren claims more children than getChild returns\n");
+            return FALSE;
+         }
+
+         if (Node_compare(oNChild, oNChild2) >= 0)
+         {
+            fprintf(stderr, "not in lexicographic order\n");
             return FALSE;
          }
 
@@ -96,8 +98,8 @@ static boolean CheckerDT_treeCheck(Node_T oNNode)
          if (!CheckerDT_treeCheck(oNChild))
             return FALSE;
       }
-      return TRUE;
    }
+   return TRUE;
 }
 
 /* see checkerDT.h for specification */
