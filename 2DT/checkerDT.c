@@ -95,12 +95,6 @@ static boolean CheckerDT_treeCheck(Node_T oNNode)
             }
          }
 
-         else if (oNChild2 == NULL || iStatus2 != SUCCESS)
-         {
-            fprintf(stderr, "Trying to access out of bounds index\n");
-            return FALSE;
-         }
-
          /* if recurring down one subtree results in a failed check
             farther down, passes the failure back up immediately */
          if (!CheckerDT_treeCheck(oNChild))
@@ -127,4 +121,30 @@ boolean CheckerDT_isValid(boolean bIsInitialized, Node_T oNRoot,
 
    /* Now checks invariants recursively at each node from the root. */
    return CheckerDT_treeCheck(oNRoot);
+
+   size_t nodeCount = CheckerDT_countNodes(oNRoot);
+   if (nodeCount != ulCount)
+   {
+      fprintf(stderr, "Node count and ulCount mismatch");
+      return FALSE;
+   }
+}
+
+static boolean CheckerDT_countNodes(Node_T oNNode)
+{
+   if (oNNode == NULL)
+      return 0;
+
+   size_t nodeCount = 1;
+   size_t numChildren = Node_getNumChildren(oNNode);
+
+   for (size_t index = 0; index < numChildren; index++)
+   {
+      Node_T oNChild = NULL;
+      if (Node_getChild(oNNode, index, &oNChild) == SUCCESS && oNChild != NULL)
+      {
+         nodeCount += CheckerDT_countNodes(oNChild);
+      }
+   }
+   return nodeCount;
 }
