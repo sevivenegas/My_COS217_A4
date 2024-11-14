@@ -80,7 +80,7 @@ static boolean CheckerDT_treeCheck(Node_T oNNode)
             return FALSE;
          }
 
-         if (oNChild2 != NULL)
+         if (oNChild2 != NULL && iStatus2 == SUCCESS)
          {
             if (Path_comparePath(Node_getPath(oNChild), Node_getPath(oNChild2)) == 0)
             {
