@@ -10,6 +10,7 @@
 #include "dynarray.h"
 #include "path.h"
 
+/* helper method to count nodes for invariant check for dtBad4 */
 static size_t CheckerDT_countNodes(Node_T oNNode);
 
 /* see checkerDT.h for specification */
@@ -70,6 +71,7 @@ static boolean CheckerDT_treeCheck(Node_T oNNode)
       /* Recur on every child of oNNode */
       for (ulIndex = 0; ulIndex < Node_getNumChildren(oNNode); ulIndex++)
       {
+         /* child at the current and next index */
          Node_T oNChild = NULL;
          Node_T oNChild2 = NULL;
 
@@ -82,17 +84,21 @@ static boolean CheckerDT_treeCheck(Node_T oNNode)
             return FALSE;
          }
 
+         /* if valid next child, checks for duplicates and lexicographic
+            ordering */
          if (oNChild2 != NULL && iStatus2 == SUCCESS)
          {
+            /* check for identical paths */
             if (Path_comparePath(Node_getPath(oNChild), Node_getPath(oNChild2)) == 0)
             {
-               fprintf(stderr, "Inserting duplicate node, path already exists\n");
+               fprintf(stderr, "Error: Duplicate path detected\n");
                return FALSE;
             }
 
+            /* check for lexicographic order */
             if (Path_comparePath(Node_getPath(oNChild), Node_getPath(oNChild2)) > 0)
             {
-               fprintf(stderr, "Not in lexicographic order\n");
+               fprintf(stderr, "Error: Paths not in lexicographic order\n");
                return FALSE;
             }
          }
@@ -122,10 +128,11 @@ boolean CheckerDT_isValid(boolean bIsInitialized, Node_T oNRoot,
       }
    }
 
+   /* count nodes and compare with expected count */
    nodeCount = CheckerDT_countNodes(oNRoot);
    if (nodeCount != ulCount)
    {
-      fprintf(stderr, "Mismatch between expected and actual number of nodes\n");
+      fprintf(stderr, "Error: Mismatch between expected and actual number of nodes\n");
       return FALSE;
    }
 
@@ -133,15 +140,19 @@ boolean CheckerDT_isValid(boolean bIsInitialized, Node_T oNRoot,
    return CheckerDT_treeCheck(oNRoot);
 }
 
+/* recursively counts total number of nodes in tree, starting from
+   given oNNode */
 static size_t CheckerDT_countNodes(Node_T oNNode)
 {
-   size_t nodeCount = 1;
-   size_t numChildren = Node_getNumChildren(oNNode);
-   size_t index;
-   
+   /* base case */
    if (oNNode == NULL)
       return 0;
 
+   size_t nodeCount = 1;
+   size_t numChildren = Node_getNumChildren(oNNode);
+   size_t index;
+
+   /* recursion! */
    for (index = 0; index < numChildren; index++)
    {
       Node_T oNChild = NULL;
