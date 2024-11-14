@@ -39,6 +39,21 @@ size_t Node_free(Node_T oNNode);
 /* Returns the path object representing oNNode's absolute path. */
 Path_T Node_getPath(Node_T oNNode);
 
+/*write comments*/
+Path_T Node_getType(Node_T oNNode);
+
+/*write comments*/
+void *Node_getContents(Node_T oNNode);
+
+/*write comments*/
+size_t Node_getContentSize(Node_T oNNode);
+
+/*write comments*/
+void Node_setContents(Node_T oNNode, void *newContent);
+
+/*write comments*/
+void Node_setContentSize(Node_T oNNode, size_t newSize);
+
 /*
   Returns TRUE if oNParent has a child with path oPPath. Returns
   FALSE if it does not.

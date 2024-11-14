@@ -1,6 +1,6 @@
 /*--------------------------------------------------------------------*/
 /* nodeFT.c                                                           */
-/* Author:                                                            */
+/* Author: Sevastian Venegas & Neha Ayyalapu                                                      */
 /*--------------------------------------------------------------------*/
 
 #include <stdlib.h>
@@ -19,9 +19,9 @@ struct node {
   Node_T oNParent;
   /* the object containing links to this node's children */
   DynArray_T oDChildren;
-  /*pointer to the content or values if node is a file (type == 1)*/
+  /*pointer contents points to the values of node if node is a file (type == 1)*/
   void *contents;
-  /*content size*/
+  /*contentSize is the node's content length*/
   size_t contentSize;
 };
 
@@ -35,6 +35,7 @@ static int Node_addChild(Node_T oNParent, Node_T oNChild,
                          size_t ulIndex) {
    assert(oNParent != NULL);
    assert(oNChild != NULL);
+   /*a parent must be a directory*/
    assert(oNParent->type == 0);
 
    if(DynArray_addAt(oNParent->oDChildren, ulIndex, oNChild))
@@ -42,6 +43,7 @@ static int Node_addChild(Node_T oNParent, Node_T oNChild,
    else
       return MEMORY_ERROR;
 }
+/*good*/
 
 /*
   Compares the string representation of oNfirst with a string
@@ -172,7 +174,7 @@ int Node_new(Path_T oPPath, Node_T oNParent, Node_T *poNResult,
     }
    }
    /*if it is a file no children -> NULL "might wanna check over for functionality"*/
-   else(type == 1){
+   else if(type == 1){
     /*do we still asign an array or null?*/
     psNew->oDChildren = NULL;
     psNew->contents = addContents;
@@ -203,7 +205,7 @@ size_t Node_free(Node_T oNNode) {
    size_t ulCount = 0;
 
    assert(oNNode != NULL);
-   assert(CheckerDT_Node_isValid(oNNode));
+   /*assert(CheckerDT_Node_isValid(oNNode));*/
 
    /* remove from parent's list */
    if(oNNode->oNParent != NULL) {
@@ -225,8 +227,9 @@ size_t Node_free(Node_T oNNode) {
    }
    /*do i free stuff ive been setting to NULL*/
    /*this is free in the case of a file*/
-   else(oNNode->type == 1){
+   else if(oNNode->type == 1){
       /*free the whole string? double check but dont delete content*/
+
    }
 
 
@@ -239,11 +242,38 @@ size_t Node_free(Node_T oNNode) {
    return ulCount;
 }
 
+
 Path_T Node_getPath(Node_T oNNode) {
    assert(oNNode != NULL);
    return oNNode->oPPath;
 }
 
+Path_T Node_getType(Node_T oNNode){
+   assert(oNNode != NULL);
+   return oNNode->type;
+}
+
+void *Node_getContents(Node_T oNNode){
+   assert(oNNode != NULL);
+   return oNNode->contents;
+}
+
+size_t Node_getContentSize(Node_T oNNode){
+   assert(oNNode != NULL);
+   return oNNode->contentSize;
+}
+
+void Node_setContents(Node_T oNNode, void *newContent){
+   assert(oNNode != NULL);
+   oNNode->contents = newContent;
+}
+
+void Node_setContentSize(Node_T oNNode, size_t newSize){
+   assert(oNNode != NULL);
+   oNNode->contentSize = newSize;
+}
+
+/*might wanna check over later it might have to account if chile is file or directory*/
 boolean Node_hasChild(Node_T oNParent, Path_T oPPath,
                          size_t *pulChildID) {
    assert(oNParent != NULL);
@@ -294,7 +324,6 @@ int Node_compare(Node_T oNFirst, Node_T oNSecond) {
    return Path_comparePath(oNFirst->oPPath, oNSecond->oPPath);
 }
 
-/*all files first then directory fix to string*/
 char *Node_toString(Node_T oNNode) {
    char *copyPath;
 

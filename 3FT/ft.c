@@ -170,27 +170,23 @@ int FT_insertFile(const char *pcPath, void *pvContents,
       return iStatus;
    }
 
-   /* no ancestor node found, so if root is not NULL,
-      pcPath isn't underneath root. */
-   if(oNCurr == NULL && oNRoot != NULL) {
+   /*file cannot be a root*/
+   if(oNCurr == NULL){
       Path_free(oPPath);
       return CONFLICTING_PATH;
    }
 
-   ulDepth = Path_getDepth(oPPath);
-   /*file cant be a root right?*/
-   if(oNCurr == NULL) /* new root! */
-      ulIndex = 1;
-   else {
-      ulIndex = Path_getDepth(Node_getPath(oNCurr))+1;
 
-      /* oNCurr is the node we're trying to insert */
-      if(ulIndex == ulDepth+1 && !Path_comparePath(oPPath,
-                                       Node_getPath(oNCurr))) {
-         Path_free(oPPath);
-         return ALREADY_IN_TREE;
-      }
+   ulDepth = Path_getDepth(oPPath);
+   ulIndex = Path_getDepth(Node_getPath(oNCurr))+1;
+
+   /* oNCurr is the node we're trying to insert */
+   if(ulIndex == ulDepth+1 && !Path_comparePath(oPPath,Node_getPath(oNCurr)))
+   {
+      Path_free(oPPath);
+      return ALREADY_IN_TREE;
    }
+   
 
    /* starting at oNCurr, build rest of the path one level at a time */
    while(ulIndex <= ulDepth) {
@@ -208,7 +204,11 @@ int FT_insertFile(const char *pcPath, void *pvContents,
       }
 
       /* insert the new node for this level */
-      iStatus = Node_new(oPPrefix, oNCurr, &oNNewNode);
+      /*new node looks a bit different here right? and dont change dir*/
+      if(ulIndex == ulDepth)
+         iStatus = Node_new(oPPrefix, oNCurr, &oNNewNode, 1, pvContents, ulLength);
+      else iStatus = Node_new(oPPrefix, oNCurr, &oNNewNode, 0, NULL, 0);
+      
       if(iStatus != SUCCESS) {
          Path_free(oPPath);
          Path_free(oPPrefix);
@@ -240,12 +240,12 @@ int FT_insertFile(const char *pcPath, void *pvContents,
 
 boolean FT_containsFile(const char *pcPath){
    int iStatus;
-  Node_T oNFound = NULL;
+   Node_T oNFound = NULL;
 
-  assert(pcPath != NULL);
+   assert(pcPath != NULL);
 
-  iStatus = FT_findNode(pcPath, &oNFound, 1);
-  return (boolean) (iStatus == SUCCESS);
+   iStatus = FT_findNode(pcPath, &oNFound, 1);
+   return (boolean) (iStatus == SUCCESS);
 }
 
 int FT_rmFile(const char *pcPath){
@@ -277,10 +277,11 @@ void *FT_getFileContents(const char *pcPath){
    {
       return iStatus;
    }
-   if(oNFound->type == 1) return oNFound->contents;
+   if(Node_getType(oNFound) == 1) return Node_getContents(oNFound);
    return FALSE;
 }
 
+/*ASK ASK ASK about if you have to anything werid free or just pointer too*/
 void *FT_replaceFileContents(const char *pcPath, void *pvNewContents,
                              size_t ulNewLength){
   Node_T oNFound = NULL;
@@ -291,14 +292,15 @@ void *FT_replaceFileContents(const char *pcPath, void *pvNewContents,
   iStatus = FT_traversePath(pcPath, &oNFound);
    if(iStatus != SUCCESS)
    {
-      return iStatus;
+      return NULL;
    }
-   if(oNFound->type == 1){
-    oldContent = oNFound->contents;
-    oNFound->content = pvNewContents;
-    oNFound->contentSize = ulNewLength;
+   if(Node_getType(oNFound) == 1){
+    oldContent = Node_getContents(oNFound);
+    Node_setContents(oNFound, pvNewContents);
+    Node_setContentSize(oNFound, ulNewLength);
+    return oldContent;
    }
-   return FALSE;
+   return NULL;
 }
 
 /*go through this and previous make sure it test for bugs as specified by the 
@@ -312,13 +314,13 @@ int FT_stat(const char *pcPath, boolean *pbIsFile, size_t *pulSize){
    {
       return iStatus;
    }
-   if(oNFound->type == 0){
+   if(Node_getType(oNFound) == 0){
     pbIsFile = FALSE;
     return SUCCESS;
    }
-   else if(oNFound->type == 1){
+   else if(Node_getType(oNFound) == 1){
     pbIsFile = TRUE;
-    pulSize = oNFound->contentSize;
+    pulSize = Node_getContentSize(oNFound);
     return SUCCESS;
    }
    return FALSE;
@@ -355,7 +357,20 @@ int FT_destroy(void){
    return SUCCESS;
 }
 
-char *FT_toString(void);
+char *FT_toString(void){
+   DynArray_T nodes;
+   size_t totalStrlen = 1;
+   char *result = NULL;
+
+   if(!bIsInitialized)
+      return NULL;
+
+   nodes = DynArray_new(ulCount);
+   
+   DynArray_free(nodes);
+
+   return result;
+}
 
 /*----------------------------------------------------------------*/
 static int FT_findNode(const char *pcPath, Node_T *poNResult, int nodeType) {
@@ -390,11 +405,17 @@ static int FT_findNode(const char *pcPath, Node_T *poNResult, int nodeType) {
       *poNResult = NULL;
       return NO_SUCH_PATH;
    }
-
-   if(oNFound->type == nodeType && Path_comparePath(Node_getPath(oNFound), oPPath) != 0) {
+  
+   if(Node_getType(oNFound) == nodeType && Path_comparePath(Node_getPath(oNFound), oPPath) != 0) {
       Path_free(oPPath);
       *poNResult = NULL;
       return NO_SUCH_PATH;
+   }
+   /*CHECK CHECK CHECK*/
+   if(Node_getType(oNFound) != nodeType && Path_comparePath(Node_getPath(oNFound), oPPath) == 0){
+      Path_free(oPPath);
+      *poNResult = NULL;
+      return CONFLICTING_PATH;
    }
 
    Path_free(oPPath);

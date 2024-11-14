@@ -1,6 +1,7 @@
 {
   "files.associations": {
     "NodeDT.C": "cpp",
-    "dynarray.h": "c"
+    "dynarray.h": "c",
+    "path.h": "c"
   }
 }
