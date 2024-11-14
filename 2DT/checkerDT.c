@@ -95,7 +95,7 @@ static boolean CheckerDT_treeCheck(Node_T oNNode)
             }
          }
 
-         if (oNChild2 == NULL || iStatus2 != SUCCESS)
+         else if (oNChild2 == NULL || iStatus2 != SUCCESS)
          {
             fprintf(stderr, "Trying to access out of bounds index\n");
             return FALSE;
