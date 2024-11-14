@@ -88,7 +88,7 @@ static boolean CheckerDT_treeCheck(Node_T oNNode)
                return FALSE;
             }
 
-            if (Node_compare(oNChild, oNChild2) > 0)
+            if (Path_comparePath(Node_getPath(oNChild), Node_getPath(oNChild2)) > 0)
             {
                fprintf(stderr, "Not in lexicographic order\n");
                return FALSE;
