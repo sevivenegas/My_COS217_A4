@@ -290,7 +290,7 @@ void *FT_getFileContents(const char *pcPath)
    Node_T oNFound = NULL;
    int iStatus;
    Path_T input;
-   if (!Path_new(pcPath, input))
+   if (!Path_new((const char *)pcPath, input))
    {
       return FALSE;
    }
