@@ -57,7 +57,8 @@ int FT_insertDir(const char *pcPath)
    ulDepth = Path_getDepth(oPPath);
    if (oNCurr == NULL) /* new root! */
       ulIndex = 1;
-   else if(Node_getType(oNCurr) == 1){ /*attempt to find bug SEVI*/
+   else if (Node_getType(oNCurr) == 1)
+   { /*attempt to find bug SEVI*/
       Path_free(oPPath);
       return NOT_A_DIRECTORY;
    }
@@ -185,7 +186,8 @@ int FT_insertFile(const char *pcPath, void *pvContents,
       Path_free(oPPath);
       return CONFLICTING_PATH;
    }
-   else if(Node_getType(oNCurr) == 1){ /*attempt to find bug SEVI*/
+   else if (Node_getType(oNCurr) == 1)
+   { /*attempt to find bug SEVI*/
       Path_free(oPPath);
       return NOT_A_DIRECTORY;
    }
@@ -449,8 +451,10 @@ static int FT_findNode(const char *pcPath, Node_T *poNResult, int nodeType)
    {
       Path_free(oPPath);
       *poNResult = NULL;
-      if(nodeType == 1) return NOT_A_FILE;
-      else return NOT_A_DIRECTORY;
+      if (nodeType == 1)
+         return NOT_A_FILE;
+      else
+         return NOT_A_DIRECTORY;
    }
 
    Path_free(oPPath);
@@ -504,7 +508,8 @@ static int FT_traversePath(Path_T oPPath, Node_T *poNFurthest)
          *poNFurthest = NULL;
          return iStatus;
       }
-      if(Node_getType(oNCurr) == 1){
+      if (Node_getType(oNCurr) == 1)
+      {
          *poNFurthest = NULL;
          return NOT_A_DIRECTORY;
       }
@@ -525,6 +530,7 @@ static int FT_traversePath(Path_T oPPath, Node_T *poNFurthest)
       {
          /* oNCurr doesn't have child with path oPPrefix:
             this is as far as we can go */
+         Path_free(oPPrefix);
          break;
       }
    }

@@ -164,7 +164,13 @@ the error manifests itself or is "noticed" by the client.
 What are your critiques of the given DT implementations, as
 specified in Step 2.5?
 
-- 3-5 critiques
+- module bloat in Node. some methods are basically just calling another 
+  function. would be better to just call the other function in the first
+  place.
 
+- poor naming conventions for DT_preOrderTraversal (arguments are only
+  one letter!)
+
+- excessive checks at the beginning of DT_insert
 
 ------------------------------------------------------------------------
