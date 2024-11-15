@@ -117,6 +117,7 @@ int main(void) {
   assert(FT_containsFile("1root/2child/3gk2/4ggk") == FALSE);
   assert(FT_insertDir("1root/2child/2child/2child") == SUCCESS);
   assert(FT_containsDir("1root/2child/2child/2child") == TRUE);
+  fprintf(stderr, "works up to here");
   assert(FT_containsFile("1root/2child/2child/2child") == FALSE);
   assert(FT_insertFile("1root/2child/2child/2child/2child", NULL, 0) ==
          SUCCESS);
