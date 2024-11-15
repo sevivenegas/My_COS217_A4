@@ -339,7 +339,7 @@ int Node_getChild(Node_T oNParent, size_t ulChildID,
    }
 }
 
-/*do i have to change*/
+/*good? I  thihk this return NULL right ASK ASK ASK*/
 Node_T Node_getParent(Node_T oNNode)
 {
    assert(oNNode != NULL);
@@ -355,6 +355,7 @@ int Node_compare(Node_T oNFirst, Node_T oNSecond)
    return Path_comparePath(oNFirst->oPPath, oNSecond->oPPath);
 }
 
+/*good*/
 char *Node_toString(Node_T oNNode)
 {
    char *copyPath;

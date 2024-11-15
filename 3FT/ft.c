@@ -57,7 +57,7 @@ int FT_insertDir(const char *pcPath)
    ulDepth = Path_getDepth(oPPath);
    if (oNCurr == NULL) /* new root! */
       ulIndex = 1;
-   else if(Node_getType(oNCurr) == 1){
+   else if(Node_getType(oNCurr) == 1){ /*attempt to find bug SEVI*/
       Path_free(oPPath);
       return NOT_A_DIRECTORY;
    }
@@ -90,6 +90,8 @@ int FT_insertDir(const char *pcPath)
          return iStatus;
       }
 
+      /*this is causing a null pointer error not sure why, might be issues with other parts of program*/
+      /*SEVI DEBUG*/
       if(Node_getType(oNCurr) == 1){
          Path_free(oPPath);
          Path_free(oPPrefix);
@@ -343,17 +345,20 @@ void *FT_replaceFileContents(const char *pcPath, void *pvNewContents,
    return NULL;
 }
 
-/*go through this and previous make sure it test for bugs as specified by the
-.h file */
+/*good i think? need to get looked over ASK ASK ASK*/
 int FT_stat(const char *pcPath, boolean *pbIsFile, size_t *pulSize)
 {
-   Node_T oNFound = NULL;
+   Node_T oNFound;
    int iStatus;
-
    Path_T input;
-   if (!Path_new((const char *)pcPath, &input))
+
+   if (!bIsInitialized)
+      return INITIALIZATION_ERROR;
+
+   iStatus = Path_new(pcPath, &input);
+   if (iStatus != SUCCESS)
    {
-      return FALSE;
+      return iStatus;
    }
 
    iStatus = FT_traversePath(input, &oNFound);
@@ -361,6 +366,8 @@ int FT_stat(const char *pcPath, boolean *pbIsFile, size_t *pulSize)
    {
       return iStatus;
    }
+
+   /*success cases*/
    if (Node_getType(oNFound) == 0)
    {
       pbIsFile = FALSE;
@@ -375,10 +382,9 @@ int FT_stat(const char *pcPath, boolean *pbIsFile, size_t *pulSize)
    return FALSE;
 }
 
+/*good*/
 int FT_init(void)
 {
-   /*assert(CheckerDT_isValid(bIsInitialized, oNRoot, ulCount));*/
-
    if (bIsInitialized)
       return INITIALIZATION_ERROR;
 
@@ -386,14 +392,12 @@ int FT_init(void)
    oNRoot = NULL;
    ulCount = 0;
 
-   /*assert(CheckerDT_isValid(bIsInitialized, oNRoot, ulCount));*/
    return SUCCESS;
 }
 
+/*good*/
 int FT_destroy(void)
 {
-   /*assert(CheckerDT_isValid(bIsInitialized, oNRoot, ulCount));*/
-
    if (!bIsInitialized)
       return INITIALIZATION_ERROR;
 
@@ -405,7 +409,6 @@ int FT_destroy(void)
 
    bIsInitialized = FALSE;
 
-   /*assert(CheckerDT_isValid(bIsInitialized, oNRoot, ulCount));*/
    return SUCCESS;
 }
 
