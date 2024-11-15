@@ -80,13 +80,6 @@ int FT_insertDir(const char *pcPath)
       Path_T oPPrefix = NULL;
       Node_T oNNewNode = NULL;
 
-      if(Node_getType(oNCurr) == 1){
-         Path_free(oPPath);
-         if (oNFirstNew != NULL)
-            (void)Node_free(oNFirstNew);
-         return NOT_A_DIRECTORY;
-      }
-
       /* generate a Path_T for this level */
       iStatus = Path_prefix(oPPath, ulIndex, &oPPrefix);
       if (iStatus != SUCCESS)
@@ -97,6 +90,14 @@ int FT_insertDir(const char *pcPath)
          return iStatus;
       }
 
+      if(Node_getType(oNCurr) == 1){
+         Path_free(oPPath);
+         Path_free(oPPrefix);
+         if (oNFirstNew != NULL)
+            (void)Node_free(oNFirstNew);
+         return NOT_A_DIRECTORY;
+      }
+
       /* insert the new node for this level */
       iStatus = Node_new(oPPrefix, oNCurr, &oNNewNode, 0, NULL, 0); /* NEHA DEBUG: changed last NULL to 0 */
       if (iStatus != SUCCESS)
@@ -105,8 +106,6 @@ int FT_insertDir(const char *pcPath)
          Path_free(oPPrefix);
          if (oNFirstNew != NULL)
             (void)Node_free(oNFirstNew);
-         /*we dont need to use any checker right*/
-         /*assert(CheckerDT_isValid(bIsInitialized, oNRoot, ulCount));*/
          return iStatus;
       }
 
