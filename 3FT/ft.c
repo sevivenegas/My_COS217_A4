@@ -293,7 +293,7 @@ void *FT_getFileContents(const char *pcPath)
    iStatus = FT_traversePath(pcPath, &oNFound);
    if (iStatus != SUCCESS)
    {
-      return iStatus;
+      return FALSE;
    }
    if (Node_getType(oNFound) == 1)
       return Node_getContents(oNFound);
