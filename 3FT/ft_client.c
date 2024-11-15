@@ -117,7 +117,6 @@ int main(void) {
   assert(FT_containsFile("1root/2child/3gk2/4ggk") == FALSE);
   assert(FT_insertDir("1root/2child/2child/2child") == SUCCESS);
   assert(FT_containsDir("1root/2child/2child/2child") == TRUE);
-  fprintf(stderr, "works up to here");
   assert(FT_containsFile("1root/2child/2child/2child") == FALSE);
   assert(FT_insertFile("1root/2child/2child/2child/2child", NULL, 0) ==
          SUCCESS);
@@ -142,6 +141,7 @@ int main(void) {
   */
   assert(FT_containsDir("1root/2child/3gkid") == TRUE);
   assert(FT_containsFile("1root/2second/3gfile") == TRUE);
+   fprintf(stderr, "works up to here 1");
   assert(FT_containsDir("1root/2second/3gfile") == FALSE);
   assert(FT_rmDir("1root/2child/3nope") == NO_SUCH_PATH);
   assert(FT_rmDir("1root/2second/3gfile") == NOT_A_DIRECTORY);
@@ -149,8 +149,10 @@ int main(void) {
   assert(FT_rmFile("1root/2child/3gkid") == NOT_A_FILE);
   assert(FT_rmDir("1root/2child/3gkid") == SUCCESS);
   assert(FT_rmFile("1root/2second/3gfile") == SUCCESS);
+   fprintf(stderr, "works up to here 2");
   assert(FT_containsDir("1root/2child/3gkid") == FALSE);
   assert(FT_containsFile("1root/2second/3gfile") == FALSE);
+   fprintf(stderr, "works up to here 3");
   assert(FT_rmFile("1root/2child/2child/2child/2child") == SUCCESS);
   assert(FT_rmDir("1root/2child/2child") == SUCCESS);
   assert((temp = FT_toString()) != NULL);
