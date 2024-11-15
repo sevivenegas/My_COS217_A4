@@ -1,6 +1,6 @@
 /*--------------------------------------------------------------------*/
 /* nodeFT.c                                                           */
-/* Author: Sevastian Venegas & Neha Ayyalapu                                                      */
+/* Author: Sevastian Venegas & Neha Ayyalapu                          */
 /*--------------------------------------------------------------------*/
 
 #include <stdlib.h>
@@ -221,7 +221,6 @@ size_t Node_free(Node_T oNNode)
    size_t ulCount = 0;
 
    assert(oNNode != NULL);
-   /*assert(CheckerDT_Node_isValid(oNNode));*/
 
    /* remove from parent's list */
    if (oNNode->oNParent != NULL)
