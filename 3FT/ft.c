@@ -58,7 +58,6 @@ int FT_insertDir(const char *pcPath)
    ulDepth = Path_getDepth(oPPath);
    if (oNCurr == NULL) /* new root! */
       ulIndex = 1;
-
    else
    {
       ulIndex = Path_getDepth(Node_getPath(oNCurr)) + 1;
@@ -90,7 +89,7 @@ int FT_insertDir(const char *pcPath)
       }
 
       /*parent must always be a directory*/
-      if(Node_getType(oNCurr) == 1){
+      if(oNCurr != NULL && Node_getType(oNCurr) == 1){
          Path_free(oPPath);
          if (oNFirstNew != NULL)
             (void)Node_free(oNFirstNew);
