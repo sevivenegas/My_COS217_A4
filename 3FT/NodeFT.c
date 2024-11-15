@@ -279,24 +279,29 @@ void *Node_getContents(Node_T oNNode)
    return oNNode->contents;
 }
 
+/*good*/
 size_t Node_getContentSize(Node_T oNNode)
 {
    assert(oNNode != NULL);
    return oNNode->contentSize;
 }
 
+/*good*/
 void Node_setContents(Node_T oNNode, void *newContent)
 {
    assert(oNNode != NULL);
    oNNode->contents = newContent;
 }
 
+/*good*/
 void Node_setContentSize(Node_T oNNode, size_t newSize)
 {
    assert(oNNode != NULL);
+   assert(newSize != NULL);
    oNNode->contentSize = newSize;
 }
 
+/*ASK ASK ASK*/
 /*might wanna check over later it might have to account if chile is file or directory*/
 boolean Node_hasChild(Node_T oNParent, Path_T oPPath,
                       size_t *pulChildID)
@@ -304,6 +309,7 @@ boolean Node_hasChild(Node_T oNParent, Path_T oPPath,
    assert(oNParent != NULL);
    assert(oPPath != NULL);
    assert(pulChildID != NULL);
+   assert(oNParent != 1);
 
    /* *pulChildID is the index into oNParent->oDChildren */
    return DynArray_bsearch(oNParent->oDChildren,
@@ -311,17 +317,19 @@ boolean Node_hasChild(Node_T oNParent, Path_T oPPath,
                            (int (*)(const void *, const void *))Node_compareString);
 }
 
+
 size_t Node_getNumChildren(Node_T oNParent)
 {
    assert(oNParent != NULL);
+   assert(oNParent->type != 1);
 
    return DynArray_getLength(oNParent->oDChildren);
 }
 
+/*good?*/
 int Node_getChild(Node_T oNParent, size_t ulChildID,
                   Node_T *poNResult)
 {
-
    assert(oNParent != NULL);
    assert(poNResult != NULL);
    assert(oNParent->type == 0);
