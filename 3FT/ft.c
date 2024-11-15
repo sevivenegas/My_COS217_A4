@@ -90,16 +90,6 @@ int FT_insertDir(const char *pcPath)
          return iStatus;
       }
 
-      /*this is causing a null pointer error not sure why, might be issues with other parts of program*/
-      /*SEVI DEBUG*/
-      if(Node_getType(oNCurr) == 1){
-         Path_free(oPPath);
-         Path_free(oPPrefix);
-         if (oNFirstNew != NULL)
-            (void)Node_free(oNFirstNew);
-         return NOT_A_DIRECTORY;
-      }
-
       /* insert the new node for this level */
       iStatus = Node_new(oPPrefix, oNCurr, &oNNewNode, 0, NULL, 0); /* NEHA DEBUG: changed last NULL to 0 */
       if (iStatus != SUCCESS)
@@ -197,6 +187,10 @@ int FT_insertFile(const char *pcPath, void *pvContents,
    {
       Path_free(oPPath);
       return CONFLICTING_PATH;
+   }
+   else if(Node_getType(oNCurr) == 1){ /*attempt to find bug SEVI*/
+      Path_free(oPPath);
+      return NOT_A_DIRECTORY;
    }
 
    ulDepth = Path_getDepth(oPPath);
