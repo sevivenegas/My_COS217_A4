@@ -530,7 +530,6 @@ static int FT_traversePath(Path_T oPPath, Node_T *poNFurthest)
       {
          /* oNCurr doesn't have child with path oPPrefix:
             this is as far as we can go */
-         Path_free(oPPrefix);
          break;
       }
    }
