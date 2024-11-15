@@ -155,9 +155,6 @@ int main(void)
    assert(FT_containsFile("1root/2second/3gfile") == FALSE);
    assert(FT_rmFile("1root/2child/2child/2child/2child") == SUCCESS);
    fprintf(stderr, "works up to here 2");
-   if(!FT_containsFile("1root/2child/2child/2child/2child")){
-      fprintf(stderr, "erased properly at least on tree end");
-   }
    assert(FT_rmDir("1root/2child/2child") == SUCCESS);
    fprintf(stderr, "works up to here 3");
    assert((temp = FT_toString()) != NULL);

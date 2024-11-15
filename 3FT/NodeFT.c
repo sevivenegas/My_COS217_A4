@@ -244,12 +244,6 @@ size_t Node_free(Node_T oNNode)
          DynArray_free(oNNode->oDChildren);
       }
    }
-   /*do i free stuff ive been setting to NULL*/
-   /*this is free in the case of a file*/
-   else if (oNNode->type == 1)
-   {
-      /*free the whole string? double check but dont delete content*/
-   }
 
    /* remove path */
    Path_free(oNNode->oPPath);
