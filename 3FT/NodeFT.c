@@ -12,7 +12,7 @@
 /* A node in a DT */
 struct node
 {
-   /* int type indicates whether a node is a file (1) or a directory (0)*/
+   /* int type indicates whether a node is file (1) or directory (0) */
    int type;
    /* the object corresponding to the node's absolute path */
    Path_T oPPath;
@@ -20,9 +20,10 @@ struct node
    Node_T oNParent;
    /* the object containing links to this node's children */
    DynArray_T oDChildren;
-   /*pointer contents points to the values of node if node is a file (type == 1)*/
+   /* pointer contents points to the values of node if node is a
+   file (type == 1)*/
    void *contents;
-   /*contentSize is the node's content length*/
+   /* contentSize is the node's content length */
    size_t contentSize;
 };
 
@@ -186,7 +187,7 @@ int Node_new(Path_T oPPath, Node_T oNParent, Node_T *poNResult,
          return MEMORY_ERROR;
       }
    }
-   /*if it is a file no children -> NULL "might wanna check over for functionality"*/
+
    else if (type == 1)
    {
       /*do we still asign an array or null?*/
@@ -298,7 +299,8 @@ void Node_setContentSize(Node_T oNNode, size_t newSize)
 }
 
 /*ASK ASK ASK*/
-/*might wanna check over later it might have to account if chile is file or directory*/
+/*might wanna check over later it might have to account if chile is
+file or directory*/
 boolean Node_hasChild(Node_T oNParent, Path_T oPPath,
                       size_t *pulChildID)
 {
@@ -310,9 +312,9 @@ boolean Node_hasChild(Node_T oNParent, Path_T oPPath,
    /* *pulChildID is the index into oNParent->oDChildren */
    return DynArray_bsearch(oNParent->oDChildren,
                            (char *)Path_getPathname(oPPath), pulChildID,
-                           (int (*)(const void *, const void *))Node_compareString);
+                           (int (*)(const void *, const void *))
+                               Node_compareString);
 }
-
 
 size_t Node_getNumChildren(Node_T oNParent)
 {
@@ -328,7 +330,11 @@ int Node_getChild(Node_T oNParent, size_t ulChildID,
 {
    assert(oNParent != NULL);
    assert(poNResult != NULL);
-   assert(oNParent->type == 0);
+
+   if (oNParent->type != 0)
+   {
+      return NO_SUCH_PATH;
+   }
 
    /* ulChildID is the index into oNParent->oDChildren */
    if (ulChildID >= Node_getNumChildren(oNParent))
