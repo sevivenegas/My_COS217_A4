@@ -382,39 +382,6 @@ int FT_destroy(void)
    return SUCCESS;
 }
 
-char *FT_toString(void)
-{
-   DynArray_T nodes;
-   size_t totalStrlen = 1;
-   char *result = NULL;
-   result[0] = '\0';
-
-   if (!bIsInitialized)
-      return NULL;
-
-   nodes = DynArray_new(ulCount);
-
-   if (oNRoot != NULL)
-   {
-      preOrderTraversal(oNRoot, nodes, 0, &totalStrlen);
-   }
-
-   result = malloc(totalStrlen * sizeof(char));
-   /* if (result == NULL)
-   {
-      DynArray_free(nodes);
-      return NULL;
-   } not sure about this one???*/
-
-   for (size_t i = 0; i < DynArray_getLength(nodes); i++)
-   {
-      strcat(result, DynArray_get(nodes, i));
-   }
-
-   DynArray_free(nodes);
-   return result;
-}
-
 /*----------------------------------------------------------------*/
 static int FT_findNode(const char *pcPath, Node_T *poNResult, int nodeType)
 {
