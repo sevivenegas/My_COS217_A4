@@ -145,25 +145,19 @@ int main(void)
    assert(FT_containsDir("1root/2child/3gkid") == TRUE);
    assert(FT_containsFile("1root/2second/3gfile") == TRUE);
    assert(FT_containsDir("1root/2second/3gfile") == FALSE);
-   fprintf(stderr, "works up to here 1");
    assert(FT_rmDir("1root/2child/3nope") == NO_SUCH_PATH);
    assert(FT_rmDir("1root/2second/3gfile") == NOT_A_DIRECTORY);
-   fprintf(stderr, "works up to here 2");
-   if(FT_containsFile("1root/2second/3nope") == FALSE)
-      fprintf(stderr, "erase top");
-   fprintf(stderr, "after the if");
    assert(FT_rmFile("1root/2child/3nope") == NO_SUCH_PATH);
-   fprintf(stderr, "works up to here x");
    assert(FT_rmFile("1root/2child/3gkid") == NOT_A_FILE);
-   fprintf(stderr, "works up to here y");
    assert(FT_rmDir("1root/2child/3gkid") == SUCCESS);
    assert(FT_rmFile("1root/2second/3gfile") == SUCCESS);
-   fprintf(stderr, "works up to here 3");
    assert(FT_containsDir("1root/2child/3gkid") == FALSE);
    assert(FT_containsFile("1root/2second/3gfile") == FALSE);
-   fprintf(stderr, "works up to here 4");
+   fprintf(stderr, "works up to here 1");
    assert(FT_rmFile("1root/2child/2child/2child/2child") == SUCCESS);
+   fprintf(stderr, "works up to here 2");
    assert(FT_rmDir("1root/2child/2child") == SUCCESS);
+   fprintf(stderr, "works up to here 3");
    assert((temp = FT_toString()) != NULL);
    fprintf(stderr, "Checkpoint 3:\n%s\n", temp);
    free(temp);
