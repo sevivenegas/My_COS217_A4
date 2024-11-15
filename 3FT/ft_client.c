@@ -149,7 +149,7 @@ int main(void)
    assert(FT_rmDir("1root/2child/3nope") == NO_SUCH_PATH);
    assert(FT_rmDir("1root/2second/3gfile") == NOT_A_DIRECTORY);
    fprintf(stderr, "works up to here 2");
-   if(FT_containsFile("1root/2second/3gfile") == FALSE)
+   if(FT_containsFile("1root/2second/3nope") == FALSE)
       fprintf(stderr, "erase top");
    fprintf(stderr, "after the if");
    assert(FT_rmFile("1root/2child/3nope") == NO_SUCH_PATH);
