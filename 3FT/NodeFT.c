@@ -10,21 +10,21 @@
 #include "nodeFT.h"
 
 /* A node in a DT */
-struct node {
-  /* int type indicates whether a node is a file (1) or a directory (0)*/
-  int type;
-  /* the object corresponding to the node's absolute path */
-  Path_T oPPath;
-  /* this node's parent */
-  Node_T oNParent;
-  /* the object containing links to this node's children */
-  DynArray_T oDChildren;
-  /*pointer contents points to the values of node if node is a file (type == 1)*/
-  void *contents;
-  /*contentSize is the node's content length*/
-  size_t contentSize;
+struct node
+{
+   /* int type indicates whether a node is a file (1) or a directory (0)*/
+   int type;
+   /* the object corresponding to the node's absolute path */
+   Path_T oPPath;
+   /* this node's parent */
+   Node_T oNParent;
+   /* the object containing links to this node's children */
+   DynArray_T oDChildren;
+   /*pointer contents points to the values of node if node is a file (type == 1)*/
+   void *contents;
+   /*contentSize is the node's content length*/
+   size_t contentSize;
 };
-
 
 /*
   Links new child oNChild into oNParent's children array at index
@@ -32,13 +32,14 @@ struct node {
   or  MEMORY_ERROR if allocation fails adding oNChild to the array.
 */
 static int Node_addChild(Node_T oNParent, Node_T oNChild,
-                         size_t ulIndex) {
+                         size_t ulIndex)
+{
    assert(oNParent != NULL);
    assert(oNChild != NULL);
    /*a parent must be a directory*/
    assert(oNParent->type == 0);
 
-   if(DynArray_addAt(oNParent->oDChildren, ulIndex, oNChild))
+   if (DynArray_addAt(oNParent->oDChildren, ulIndex, oNChild))
       return SUCCESS;
    else
       return MEMORY_ERROR;
@@ -52,13 +53,13 @@ static int Node_addChild(Node_T oNParent, Node_T oNChild,
   "greater than" pcSecond, respectively.
 */
 static int Node_compareString(const Node_T oNFirst,
-                                 const char *pcSecond) {
+                              const char *pcSecond)
+{
    assert(oNFirst != NULL);
    assert(pcSecond != NULL);
 
    return Path_compareString(oNFirst->oPPath, pcSecond);
 }
-
 
 /*
   Creates a new node with path oPPath and parent oNParent.  Returns an
@@ -71,8 +72,9 @@ static int Node_compareString(const Node_T oNFirst,
                  or oNParent is NULL but oPPath is not of depth 1
   * ALREADY_IN_TREE if oNParent already has a child with this path
 */
-int Node_new(Path_T oPPath, Node_T oNParent, Node_T *poNResult, 
-  int type, void* addContents, size_t cSize) {
+int Node_new(Path_T oPPath, Node_T oNParent, Node_T *poNResult,
+             int type, void *addContents, size_t cSize)
+{
 
    struct node *psNew;
    Path_T oPParentPath = NULL;
@@ -86,7 +88,8 @@ int Node_new(Path_T oPPath, Node_T oNParent, Node_T *poNResult,
 
    /* allocate space for a new node */
    psNew = malloc(sizeof(struct node));
-   if(psNew == NULL) {
+   if (psNew == NULL)
+   {
       *poNResult = NULL;
       return MEMORY_ERROR;
    }
@@ -95,7 +98,8 @@ int Node_new(Path_T oPPath, Node_T oNParent, Node_T *poNResult,
 
    /* set the new node's path */
    iStatus = Path_dup(oPPath, &oPNewPath);
-   if(iStatus != SUCCESS) {
+   if (iStatus != SUCCESS)
+   {
       free(psNew);
       *poNResult = NULL;
       return iStatus;
@@ -103,7 +107,8 @@ int Node_new(Path_T oPPath, Node_T oNParent, Node_T *poNResult,
    psNew->oPPath = oPNewPath;
 
    /* validate and set the new node's parent */
-   if(oNParent != NULL) {
+   if (oNParent != NULL)
+   {
       size_t ulSharedDepth;
 
       oPParentPath = oNParent->oPPath;
@@ -111,15 +116,17 @@ int Node_new(Path_T oPPath, Node_T oNParent, Node_T *poNResult,
       ulSharedDepth = Path_getSharedPrefixDepth(psNew->oPPath,
                                                 oPParentPath);
       /*file must be a leaf and cannot be a parent*/
-      if(oNParent->type == 1){
-        Path_free(psNew->oPPath);
-        free(psNew);
-        *poNResult = NULL;
-        return CONFLICTING_PATH;
+      if (oNParent->type == 1)
+      {
+         Path_free(psNew->oPPath);
+         free(psNew);
+         *poNResult = NULL;
+         return CONFLICTING_PATH;
       }
 
       /* parent must be an ancestor of child */
-      if(ulSharedDepth < ulParentDepth) {
+      if (ulSharedDepth < ulParentDepth)
+      {
          Path_free(psNew->oPPath);
          free(psNew);
          *poNResult = NULL;
@@ -127,7 +134,8 @@ int Node_new(Path_T oPPath, Node_T oNParent, Node_T *poNResult,
       }
 
       /* parent must be exactly one level up from child */
-      if(Path_getDepth(psNew->oPPath) != ulParentDepth + 1) {
+      if (Path_getDepth(psNew->oPPath) != ulParentDepth + 1)
+      {
          Path_free(psNew->oPPath);
          free(psNew);
          *poNResult = NULL;
@@ -135,24 +143,28 @@ int Node_new(Path_T oPPath, Node_T oNParent, Node_T *poNResult,
       }
 
       /* parent must not already have child with this path */
-      if(Node_hasChild(oNParent, oPPath, &ulIndex)) {
+      if (Node_hasChild(oNParent, oPPath, &ulIndex))
+      {
          Path_free(psNew->oPPath);
          free(psNew);
          *poNResult = NULL;
          return ALREADY_IN_TREE;
       }
    }
-   else {
+   else
+   {
       /*root cannot be a file*/
-      if(psNew->type == 1){
-        Path_free(psNew->oPPath);
-        free(psNew);
-        *poNResult = NULL;
-        return CONFLICTING_PATH;
+      if (psNew->type == 1)
+      {
+         Path_free(psNew->oPPath);
+         free(psNew);
+         *poNResult = NULL;
+         return CONFLICTING_PATH;
       }
       /* new node must be root */
       /* can only create one "level" at a time */
-      if(Path_getDepth(psNew->oPPath) != 1) {
+      if (Path_getDepth(psNew->oPPath) != 1)
+      {
          Path_free(psNew->oPPath);
          free(psNew);
          *poNResult = NULL;
@@ -162,29 +174,34 @@ int Node_new(Path_T oPPath, Node_T oNParent, Node_T *poNResult,
    psNew->oNParent = oNParent;
 
    /* initialize the new node */
-   if(type == 0){
-    psNew->oDChildren = DynArray_new(0);
-    psNew->contents = NULL;
-    psNew->contentSize = 0;
-    if(psNew->oDChildren == NULL) {
-      Path_free(psNew->oPPath);
-      free(psNew);
-      *poNResult = NULL;
-      return MEMORY_ERROR;
-    }
+   if (type == 0)
+   {
+      psNew->oDChildren = DynArray_new(0);
+      psNew->contents = NULL;
+      psNew->contentSize = 0;
+      if (psNew->oDChildren == NULL)
+      {
+         Path_free(psNew->oPPath);
+         free(psNew);
+         *poNResult = NULL;
+         return MEMORY_ERROR;
+      }
    }
    /*if it is a file no children -> NULL "might wanna check over for functionality"*/
-   else if(type == 1){
-    /*do we still asign an array or null?*/
-    psNew->oDChildren = NULL;
-    psNew->contents = addContents;
-    psNew->contentSize = cSize;
+   else if (type == 1)
+   {
+      /*do we still asign an array or null?*/
+      psNew->oDChildren = NULL;
+      psNew->contents = addContents;
+      psNew->contentSize = cSize;
    }
 
    /* Link into parent's children list */
-   if(oNParent != NULL) {
+   if (oNParent != NULL)
+   {
       iStatus = Node_addChild(oNParent, psNew, ulIndex);
-      if(iStatus != SUCCESS) {
+      if (iStatus != SUCCESS)
+      {
          Path_free(psNew->oPPath);
          free(psNew);
          *poNResult = NULL;
@@ -200,7 +217,8 @@ int Node_new(Path_T oPPath, Node_T oNParent, Node_T *poNResult,
    return SUCCESS;
 }
 
-size_t Node_free(Node_T oNNode) {
+size_t Node_free(Node_T oNNode)
+{
    size_t ulIndex;
    size_t ulCount = 0;
 
@@ -208,30 +226,31 @@ size_t Node_free(Node_T oNNode) {
    /*assert(CheckerDT_Node_isValid(oNNode));*/
 
    /* remove from parent's list */
-   if(oNNode->oNParent != NULL) {
-      if(DynArray_bsearch(
-            oNNode->oNParent->oDChildren,
-            oNNode, &ulIndex,
-            (int (*)(const void *, const void *)) Node_compare)
-        )
-         (void) DynArray_removeAt(oNNode->oNParent->oDChildren,
-                                  ulIndex);
+   if (oNNode->oNParent != NULL)
+   {
+      if (DynArray_bsearch(
+              oNNode->oNParent->oDChildren,
+              oNNode, &ulIndex,
+              (int (*)(const void *, const void *))Node_compare))
+         (void)DynArray_removeAt(oNNode->oNParent->oDChildren,
+                                 ulIndex);
    }
 
    /* recursively remove children */
-   if(oNNode->type == 0){
-    while(DynArray_getLength(oNNode->oDChildren) != 0) {
-      ulCount += Node_free(DynArray_get(oNNode->oDChildren, 0));
-      DynArray_free(oNNode->oDChildren);
-    }
+   if (oNNode->type == 0)
+   {
+      while (DynArray_getLength(oNNode->oDChildren) != 0)
+      {
+         ulCount += Node_free(DynArray_get(oNNode->oDChildren, 0));
+         DynArray_free(oNNode->oDChildren);
+      }
    }
    /*do i free stuff ive been setting to NULL*/
    /*this is free in the case of a file*/
-   else if(oNNode->type == 1){
+   else if (oNNode->type == 1)
+   {
       /*free the whole string? double check but dont delete content*/
-
    }
-
 
    /* remove path */
    Path_free(oNNode->oPPath);
@@ -242,95 +261,108 @@ size_t Node_free(Node_T oNNode) {
    return ulCount;
 }
 
-
-Path_T Node_getPath(Node_T oNNode) {
+Path_T Node_getPath(Node_T oNNode)
+{
    assert(oNNode != NULL);
    return oNNode->oPPath;
 }
 
-Path_T Node_getType(Node_T oNNode){
+int Node_getType(Node_T oNNode)
+{
    assert(oNNode != NULL);
    return oNNode->type;
 }
 
-void *Node_getContents(Node_T oNNode){
+void *Node_getContents(Node_T oNNode)
+{
    assert(oNNode != NULL);
    return oNNode->contents;
 }
 
-size_t Node_getContentSize(Node_T oNNode){
+size_t Node_getContentSize(Node_T oNNode)
+{
    assert(oNNode != NULL);
    return oNNode->contentSize;
 }
 
-void Node_setContents(Node_T oNNode, void *newContent){
+void Node_setContents(Node_T oNNode, void *newContent)
+{
    assert(oNNode != NULL);
    oNNode->contents = newContent;
 }
 
-void Node_setContentSize(Node_T oNNode, size_t newSize){
+void Node_setContentSize(Node_T oNNode, size_t newSize)
+{
    assert(oNNode != NULL);
    oNNode->contentSize = newSize;
 }
 
 /*might wanna check over later it might have to account if chile is file or directory*/
 boolean Node_hasChild(Node_T oNParent, Path_T oPPath,
-                         size_t *pulChildID) {
+                      size_t *pulChildID)
+{
    assert(oNParent != NULL);
    assert(oPPath != NULL);
    assert(pulChildID != NULL);
 
    /* *pulChildID is the index into oNParent->oDChildren */
    return DynArray_bsearch(oNParent->oDChildren,
-            (char*) Path_getPathname(oPPath), pulChildID,
-            (int (*)(const void*,const void*)) Node_compareString);
+                           (char *)Path_getPathname(oPPath), pulChildID,
+                           (int (*)(const void *, const void *))Node_compareString);
 }
 
-size_t Node_getNumChildren(Node_T oNParent) {
+size_t Node_getNumChildren(Node_T oNParent)
+{
    assert(oNParent != NULL);
 
    return DynArray_getLength(oNParent->oDChildren);
 }
 
-int  Node_getChild(Node_T oNParent, size_t ulChildID,
-                   Node_T *poNResult) {
+int Node_getChild(Node_T oNParent, size_t ulChildID,
+                  Node_T *poNResult)
+{
 
    assert(oNParent != NULL);
    assert(poNResult != NULL);
    assert(oNParent->type == 0);
 
    /* ulChildID is the index into oNParent->oDChildren */
-   if(ulChildID >= Node_getNumChildren(oNParent)) {
+   if (ulChildID >= Node_getNumChildren(oNParent))
+   {
       *poNResult = NULL;
       return NO_SUCH_PATH;
    }
-   else {
+   else
+   {
       *poNResult = DynArray_get(oNParent->oDChildren, ulChildID);
       return SUCCESS;
    }
 }
 
 /*do i have to change*/
-Node_T Node_getParent(Node_T oNNode) {
+Node_T Node_getParent(Node_T oNNode)
+{
    assert(oNNode != NULL);
 
    return oNNode->oNParent;
 }
 
-int Node_compare(Node_T oNFirst, Node_T oNSecond) {
+int Node_compare(Node_T oNFirst, Node_T oNSecond)
+{
    assert(oNFirst != NULL);
    assert(oNSecond != NULL);
 
    return Path_comparePath(oNFirst->oPPath, oNSecond->oPPath);
 }
 
-char *Node_toString(Node_T oNNode) {
+char *Node_toString(Node_T oNNode)
+{
    char *copyPath;
 
    assert(oNNode != NULL);
 
-   copyPath = malloc(Path_getStrLength(Node_getPath(oNNode))+1);
-   if(copyPath == NULL)
+   copyPath = malloc(Path_getStrLength(Node_getPath(oNNode)) + 1);
+   if (copyPath == NULL)
       return NULL;
    else
       return strcpy(copyPath, Path_getPathname(Node_getPath(oNNode)));
