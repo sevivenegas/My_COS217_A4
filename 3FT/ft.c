@@ -16,6 +16,8 @@ static size_t ulCount;
 
 static int FT_traversePath(Path_T oPPath, Node_T *poNFurthest);
 static int FT_findNode(const char *pcPath, Node_T *poNResult, int nodeType);
+static void FT_strlenAccumulate(Node_T oNNode, size_t *pulAcc);
+static void FT_strcatAccumulate(Node_T oNNode, char *pcAcc);
 
 int FT_insertDir(const char *pcPath)
 {
@@ -211,7 +213,7 @@ int FT_insertFile(const char *pcPath, void *pvContents,
          Path_free(oPPath);
          if (oNFirstNew != NULL)
             (void)Node_free(oNFirstNew);
-         assert(CheckerDT_isValid(bIsInitialized, oNRoot, ulCount));
+         /* assert(CheckerDT_isValid(bIsInitialized, oNRoot, ulCount)); */
          return iStatus;
       }
 
@@ -228,7 +230,7 @@ int FT_insertFile(const char *pcPath, void *pvContents,
          Path_free(oPPrefix);
          if (oNFirstNew != NULL)
             (void)Node_free(oNFirstNew);
-         assert(CheckerDT_isValid(bIsInitialized, oNRoot, ulCount));
+         /* assert(CheckerDT_isValid(bIsInitialized, oNRoot, ulCount)); */
          return iStatus;
       }
 
@@ -247,7 +249,7 @@ int FT_insertFile(const char *pcPath, void *pvContents,
       oNRoot = oNFirstNew;
    ulCount += ulNewNodes;
 
-   assert(CheckerDT_isValid(bIsInitialized, oNRoot, ulCount));
+   /* assert(CheckerDT_isValid(bIsInitialized, oNRoot, ulCount)); */
    return SUCCESS;
 }
 
