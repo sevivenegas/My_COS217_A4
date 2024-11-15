@@ -89,6 +89,14 @@ int FT_insertDir(const char *pcPath)
          return iStatus;
       }
 
+      /*parent must always be a directory*/
+      if(Node_getType(oNCurr) == 1){
+         Path_free(oPPath);
+         if (oNFirstNew != NULL)
+            (void)Node_free(oNFirstNew);
+         return NOT_A_DIRECTORY;
+      }
+
       /* insert the new node for this level */
       iStatus = Node_new(oPPrefix, oNCurr, &oNNewNode, 0, NULL, 0); /* NEHA DEBUG: changed last NULL to 0 */
       if (iStatus != SUCCESS)
