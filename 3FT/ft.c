@@ -29,12 +29,11 @@ int FT_insertDir(const char *pcPath)
    size_t ulNewNodes = 0;
 
    assert(pcPath != NULL);
-   /*assert(CheckerDT_isValid(bIsInitialized, oNRoot, ulCount));*/
 
-   /* validate pcPath and generate a Path_T for it */
    if (!bIsInitialized)
       return INITIALIZATION_ERROR;
 
+   /* validate pcPath and generate a Path_T for it */
    iStatus = Path_new(pcPath, &oPPath);
    if (iStatus != SUCCESS)
       return iStatus;
@@ -55,14 +54,13 @@ int FT_insertDir(const char *pcPath)
       return CONFLICTING_PATH;
    }
 
-   if(Node_getType(oNCurr) == 1){
-      Path_free(oPPath);
-      return NOT_A_DIRECTORY;
-   }
-
    ulDepth = Path_getDepth(oPPath);
    if (oNCurr == NULL) /* new root! */
       ulIndex = 1;
+   else if(Node_getType(oNCurr) == 1){
+      Path_free(oPPath);
+      return NOT_A_DIRECTORY;
+   }
    else
    {
       ulIndex = Path_getDepth(Node_getPath(oNCurr)) + 1;
@@ -91,14 +89,6 @@ int FT_insertDir(const char *pcPath)
             (void)Node_free(oNFirstNew);
          /*assert(CheckerDT_isValid(bIsInitialized, oNRoot, ulCount));*/
          return iStatus;
-      }
-
-      /*parent must always be a directory*/
-      if(oNCurr != NULL && Node_getType(oNCurr) == 1){
-         Path_free(oPPath);
-         if (oNFirstNew != NULL)
-            (void)Node_free(oNFirstNew);
-         return NOT_A_DIRECTORY;
       }
 
       /* insert the new node for this level */
