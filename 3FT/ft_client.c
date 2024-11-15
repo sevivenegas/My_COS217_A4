@@ -120,6 +120,7 @@ int main(void) {
   assert(FT_containsFile("1root/2child/2child/2child") == FALSE);
   assert(FT_insertFile("1root/2child/2child/2child/2child", NULL, 0) ==
          SUCCESS);
+         fprintf(stderr, "works up to here 4");
   assert(FT_containsDir("1root/2child/2child/2child/2child") == FALSE);
   assert(FT_containsFile("1root/2child/2child/2child/2child") == TRUE);
   assert((temp = FT_toString()) != NULL);
@@ -127,7 +128,9 @@ int main(void) {
   free(temp);
 
   /* Attempting to insert a child of a file is illegal */
+  fprintf(stderr, "works up to here 6");
   assert(FT_insertDir("1root/2third/3nopeD") == NOT_A_DIRECTORY);
+  fprintf(stderr, "works up to here 7");
   assert(FT_containsDir("1root/2third/3nopeD") == FALSE);
   assert(FT_insertFile("1root/2third/3nopeF", NULL, 0) ==
          NOT_A_DIRECTORY);
