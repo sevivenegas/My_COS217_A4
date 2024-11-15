@@ -55,6 +55,11 @@ int FT_insertDir(const char *pcPath)
       return CONFLICTING_PATH;
    }
 
+   if(Node_getType(oNCurr) == 1){
+      Path_free(oPPath);
+      return NOT_A_DIRECTORY;
+   }
+
    ulDepth = Path_getDepth(oPPath);
    if (oNCurr == NULL) /* new root! */
       ulIndex = 1;
