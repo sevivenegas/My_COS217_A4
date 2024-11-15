@@ -297,7 +297,6 @@ void Node_setContents(Node_T oNNode, void *newContent)
 void Node_setContentSize(Node_T oNNode, size_t newSize)
 {
    assert(oNNode != NULL);
-   assert(newSize != NULL);
    oNNode->contentSize = newSize;
 }
 
@@ -309,7 +308,7 @@ boolean Node_hasChild(Node_T oNParent, Path_T oPPath,
    assert(oNParent != NULL);
    assert(oPPath != NULL);
    assert(pulChildID != NULL);
-   assert(oNParent != 1);
+   assert(Node_getType(oNParent) != 1);
 
    /* *pulChildID is the index into oNParent->oDChildren */
    return DynArray_bsearch(oNParent->oDChildren,
