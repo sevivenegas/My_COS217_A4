@@ -137,10 +137,8 @@ int FT_rmDir(const char *pcPath)
    Node_T oNFound = NULL;
 
    assert(pcPath != NULL);
-   /*assert(CheckerDT_isValid(bIsInitialized, oNRoot, ulCount))*/
 
    iStatus = FT_findNode(pcPath, &oNFound, 0);
-
    if (iStatus != SUCCESS)
       return iStatus;
 
@@ -148,7 +146,6 @@ int FT_rmDir(const char *pcPath)
    if (ulCount == 0)
       oNRoot = NULL;
 
-   /*assert(CheckerDT_isValid(bIsInitialized, oNRoot, ulCount));*/
    return SUCCESS;
 }
 

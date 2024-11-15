@@ -127,10 +127,7 @@ int main(void) {
   free(temp);
 
   /* Attempting to insert a child of a file is illegal */
-  fprintf(stderr, "works up to here 6");
-  /*fprintf(stderr, FT_insertDir("1root/2third/3nopeD"));*/
   assert(FT_insertDir("1root/2third/3nopeD") == NOT_A_DIRECTORY);
-  fprintf(stderr, "works up to here 7");
   assert(FT_containsDir("1root/2third/3nopeD") == FALSE);
   assert(FT_insertFile("1root/2third/3nopeF", NULL, 0) ==
          NOT_A_DIRECTORY);
@@ -147,6 +144,7 @@ int main(void) {
    fprintf(stderr, "works up to here 1");
   assert(FT_containsDir("1root/2second/3gfile") == FALSE);
   assert(FT_rmDir("1root/2child/3nope") == NO_SUCH_PATH);
+  fprintf(stderr,FT_rmDir("1root/2second/3gfile"));
   assert(FT_rmDir("1root/2second/3gfile") == NOT_A_DIRECTORY);
   assert(FT_rmFile("1root/2child/3nope") == NO_SUCH_PATH);
   assert(FT_rmFile("1root/2child/3gkid") == NOT_A_FILE);
