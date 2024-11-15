@@ -272,7 +272,6 @@ int FT_rmFile(const char *pcPath)
    assert(pcPath != NULL);
 
    iStatus = FT_findNode(pcPath, &oNFound, 1);
-
    if (iStatus != SUCCESS)
       return iStatus;
 
@@ -450,7 +449,7 @@ static int FT_findNode(const char *pcPath, Node_T *poNResult, int nodeType)
    {
       Path_free(oPPath);
       *poNResult = NULL;
-      if(nodeType == 1) return NO_SUCH_PATH;
+      if(nodeType == 1) return NOT_A_FILE;
       else return NOT_A_DIRECTORY;
    }
 
