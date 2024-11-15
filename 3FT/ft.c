@@ -442,8 +442,7 @@ static int FT_findNode(const char *pcPath, Node_T *poNResult,
       return NO_SUCH_PATH;
    }
 
-   if (Node_getType(oNFound) == nodeType &&
-       Path_comparePath(Node_getPath(oNFound), oPPath) != 0)
+   if (Path_comparePath(Node_getPath(oNFound), oPPath) != 0)
    {
       Path_free(oPPath);
       *poNResult = NULL;
