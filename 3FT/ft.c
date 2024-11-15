@@ -270,7 +270,6 @@ int FT_rmFile(const char *pcPath)
    Node_T oNFound = NULL;
 
    assert(pcPath != NULL);
-   /*assert(CheckerDT_isValid(bIsInitialized, oNRoot, ulCount))*/
 
    iStatus = FT_findNode(pcPath, &oNFound, 1);
 
@@ -281,7 +280,6 @@ int FT_rmFile(const char *pcPath)
    if (ulCount == 0)
       oNRoot = NULL;
 
-   /*assert(CheckerDT_isValid(bIsInitialized, oNRoot, ulCount));*/
    return SUCCESS;
 }
 
@@ -452,7 +450,7 @@ static int FT_findNode(const char *pcPath, Node_T *poNResult, int nodeType)
    {
       Path_free(oPPath);
       *poNResult = NULL;
-      if(nodeType == 1) return NOT_A_FILE;
+      if(nodeType == 1) return NO_SUCH_PATH;
       else return NOT_A_DIRECTORY;
    }
 
