@@ -509,6 +509,10 @@ static int FT_traversePath(Path_T oPPath, Node_T *poNFurthest)
          *poNFurthest = NULL;
          return iStatus;
       }
+      if(Node_getType(oNCurr) == 1){
+         *poNFurthest = NULL;
+         return NOT_A_DIRECTORY;
+      }
       if (Node_hasChild(oNCurr, oPPrefix, &ulChildID))
       {
          /* go to that child and continue with next prefix */

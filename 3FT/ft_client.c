@@ -128,8 +128,8 @@ int main(void) {
 
   /* Attempting to insert a child of a file is illegal */
   fprintf(stderr, "works up to here 6");
-  fprintf(stderr, FT_insertDir("1root/2third/3nopeD"));
-  /* assert(FT_insertDir("1root/2third/3nopeD") == NOT_A_DIRECTORY); */
+  /*fprintf(stderr, FT_insertDir("1root/2third/3nopeD"));*/
+  assert(FT_insertDir("1root/2third/3nopeD") == NOT_A_DIRECTORY);
   fprintf(stderr, "works up to here 7");
   assert(FT_containsDir("1root/2third/3nopeD") == FALSE);
   assert(FT_insertFile("1root/2third/3nopeF", NULL, 0) ==
