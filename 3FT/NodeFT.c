@@ -270,7 +270,7 @@ Path_T Node_getPath(Node_T oNNode)
 int Node_getType(Node_T oNNode)
 {
    assert(oNNode != NULL);
-   return (int)oNNode->type;
+   return oNNode->type;
 }
 
 void *Node_getContents(Node_T oNNode)

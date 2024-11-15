@@ -10,7 +10,6 @@
 #include "a4def.h"
 #include "path.h"
 
-
 /* A Node_T is a node in a Directory Tree */
 typedef struct node *Node_T;
 
@@ -26,8 +25,8 @@ typedef struct node *Node_T;
                  or oNParent is NULL but oPPath is not of depth 1
   * ALREADY_IN_TREE if oNParent already has a child with this path
 */
-int Node_new(Path_T oPPath, Node_T oNParent, Node_T *poNResult, 
-  int type, void* addContents, size_t cSize);
+int Node_new(Path_T oPPath, Node_T oNParent, Node_T *poNResult,
+             int type, void *addContents, size_t cSize);
 
 /*
   Destroys and frees all memory allocated for the subtree rooted at
@@ -40,7 +39,7 @@ size_t Node_free(Node_T oNNode);
 Path_T Node_getPath(Node_T oNNode);
 
 /*write comments*/
-Path_T Node_getType(Node_T oNNode);
+int Node_getType(Node_T oNNode);
 
 /*write comments*/
 void *Node_getContents(Node_T oNNode);
@@ -64,7 +63,7 @@ void Node_setContentSize(Node_T oNNode, size_t newSize);
   child _would_ have if inserted.
 */
 boolean Node_hasChild(Node_T oNParent, Path_T oPPath,
-                         size_t *pulChildID);
+                      size_t *pulChildID);
 
 /* Returns the number of children that oNParent has. */
 size_t Node_getNumChildren(Node_T oNParent);
