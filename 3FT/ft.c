@@ -314,13 +314,14 @@ void *FT_replaceFileContents(const char *pcPath, void *pvNewContents,
    void *oldContent = NULL;
 
    int iStatus;
+
    Path_T input;
    if (!Path_new((const char *)pcPath, &input))
    {
       return FALSE;
    }
 
-   iStatus = FT_traversePath(pcPath, &oNFound);
+   iStatus = FT_traversePath(input, &oNFound);
    if (iStatus != SUCCESS)
    {
       return NULL;
@@ -342,7 +343,13 @@ int FT_stat(const char *pcPath, boolean *pbIsFile, size_t *pulSize)
    Node_T oNFound = NULL;
    int iStatus;
 
-   iStatus = FT_traversePath(pcPath, &oNFound);
+   Path_T input;
+   if (!Path_new((const char *)pcPath, &input))
+   {
+      return FALSE;
+   }
+
+   iStatus = FT_traversePath(input, &oNFound);
    if (iStatus != SUCCESS)
    {
       return iStatus;
