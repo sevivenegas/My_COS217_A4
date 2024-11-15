@@ -289,8 +289,13 @@ void *FT_getFileContents(const char *pcPath)
 {
    Node_T oNFound = NULL;
    int iStatus;
+   Path_T input;
+   if (!Path_new(pcPath, input))
+   {
+      return FALSE;
+   }
 
-   iStatus = FT_traversePath((char *) pcPath, &oNFound);
+   iStatus = FT_traversePath(input, &oNFound);
    if (iStatus != SUCCESS)
    {
       return FALSE;
