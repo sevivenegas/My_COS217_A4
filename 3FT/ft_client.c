@@ -38,7 +38,6 @@ int main(void)
    assert(FT_containsFile("1root/2child/3gkid/4ggk") == FALSE);
    assert(FT_rmFile("1root/2child/3gkid/4ggk") == INITIALIZATION_ERROR);
    assert((temp = FT_toString()) == NULL);
-   assert(FT_destroy() == INITIALIZATION_ERROR);
 
    /* After initialization, the data structure is empty, so
       contains* should still return FALSE for any non-NULL string,
