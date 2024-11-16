@@ -187,6 +187,7 @@ int FT_insertFile(const char *pcPath, void *pvContents,
       Path_free(oPPath);
       return CONFLICTING_PATH;
    }
+
    else if (Node_getType(oNCurr) == 1)
    { /*attempt to find bug SEVI*/
       Path_free(oPPath);
@@ -236,8 +237,7 @@ int FT_insertFile(const char *pcPath, void *pvContents,
          Path_free(oPPrefix);
          if (oNFirstNew != NULL)
             (void)Node_free(oNFirstNew);
-         /* assert(CheckerDT_isValid(bIsInitialized, oNRoot, ulCount));
-          */
+
          return iStatus;
       }
 
@@ -295,18 +295,16 @@ void *FT_getFileContents(const char *pcPath)
    int iStatus;
 
    Path_T input;
-   if (!Path_new((const char *)pcPath, &input))
-   {
+   if (Path_new((const char *)pcPath, &input))
       return FALSE;
-   }
 
    iStatus = FT_traversePath(input, &oNFound);
    if (iStatus != SUCCESS)
-   {
       return FALSE;
-   }
+
    if (Node_getType(oNFound) == 1)
       return Node_getContents(oNFound);
+
    return FALSE;
 }
 
