@@ -141,11 +141,11 @@ int FT_rmDir(const char *pcPath)
    assert(pcPath != NULL);
 
    iStatus = FT_findNode(pcPath, &oNFound);
-   if (Node_getType(oNFound) == 1)
-      return NOT_A_DIRECTORY;
-
    if (iStatus != SUCCESS)
       return iStatus;
+
+   if (Node_getType(oNFound) == 1)
+      return NOT_A_DIRECTORY;
 
    ulCount -= Node_free(oNFound);
    if (ulCount == 0)
@@ -281,11 +281,11 @@ int FT_rmFile(const char *pcPath)
    assert(pcPath != NULL);
 
    iStatus = FT_findNode(pcPath, &oNFound);
-   if (Node_getType(oNFound) == 0)
-      return NOT_A_FILE;
-
    if (iStatus != SUCCESS)
       return iStatus;
+
+   if (Node_getType(oNFound) == 0)
+      return NOT_A_FILE;
 
    ulCount -= Node_free(oNFound);
    if (ulCount == 0)
