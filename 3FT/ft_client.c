@@ -31,13 +31,20 @@ int main(void)
     * toString should return NULL.
     */
    assert(FT_insertDir("1root/2child/3gkid") == INITIALIZATION_ERROR);
+   fprintf(stderr, "works up to here z");
    assert(FT_containsDir("1root/2child/3gkid") == FALSE);
+   fprintf(stderr, "works up to here y");
    assert(FT_rmDir("1root/2child/3gkid") == INITIALIZATION_ERROR);
+   fprintf(stderr, "works up to here x");
    assert(FT_insertFile("1root/2child/3gkid/4ggk", NULL, 0) ==
           INITIALIZATION_ERROR);
+   fprintf(stderr, "works up to here w");
    assert(FT_containsFile("1root/2child/3gkid/4ggk") == FALSE);
+   fprintf(stderr, "works up to here v");
    assert(FT_rmFile("1root/2child/3gkid/4ggk") == INITIALIZATION_ERROR);
+   fprintf(stderr, "works up to here u");
    assert((temp = FT_toString()) == NULL);
+   fprintf(stderr, "works up to here a");
    assert(FT_destroy() == INITIALIZATION_ERROR);
    fprintf(stderr, "works up to here 1");
 
