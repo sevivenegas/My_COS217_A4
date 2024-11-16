@@ -255,7 +255,7 @@ int FT_insertFile(const char *pcPath, void *pvContents,
    if (oNRoot == NULL)
       oNRoot = oNFirstNew;
    ulCount += ulNewNodes;
-   
+
    return SUCCESS;
 }
 
@@ -317,10 +317,8 @@ void *FT_replaceFileContents(const char *pcPath, void *pvNewContents,
    int iStatus;
 
    Path_T input;
-   if (!Path_new((const char *)pcPath, &input))
-   {
+   if (Path_new((const char *)pcPath, &input))
       return FALSE;
-   }
 
    iStatus = FT_traversePath(input, &oNFound);
    if (iStatus != SUCCESS)
