@@ -91,6 +91,6 @@ size_t Path_getSharedPrefixDepth(Path_T oPPath1, Path_T oPPath2);
   would be returned.
   Returns NULL if ulLevel is greater than oPPath's maxium level.
 */
-static const char *Path_getComponent(Path_T oPPath, size_t ulLevel);
+const char *Path_getComponent(Path_T oPPath, size_t ulLevel);
 
 #endif
