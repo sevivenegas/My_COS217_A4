@@ -351,7 +351,6 @@ int FT_stat(const char *pcPath, boolean *pbIsFile, size_t *pulSize)
 {
    Node_T oNFound;
    int iStatus;
-   Path_T input;
 
    assert(pcPath != NULL);
    assert(pbIsFile != NULL);
