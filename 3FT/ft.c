@@ -354,7 +354,6 @@ int FT_stat(const char *pcPath, boolean *pbIsFile, size_t *pulSize)
       return NO_SUCH_PATH;
    } */
 
-   iStatus = FT_traversePath(input, &oNFound);
    if (iStatus != SUCCESS)
       return iStatus;
 
