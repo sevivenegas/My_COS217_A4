@@ -15,7 +15,12 @@ typedef struct node *Node_T;
 
 /*
   Creates a new node in the Directory Tree, with path oPPath and
-  parent oNParent. Returns an int SUCCESS status and sets *poNResult
+  parent oNParent, and of type 0 (directory) or 1 (file).
+  also *addContents, which is a void pointer to the content a user
+  may add to a file.
+  cSize is the size of the contents (ex: length of string).
+
+  Returns an int SUCCESS status and sets *poNResult
   to be the new node if successful. Otherwise, sets *poNResult to NULL
   and returns status:
   * MEMORY_ERROR if memory could not be allocated to complete request
@@ -38,19 +43,23 @@ size_t Node_free(Node_T oNNode);
 /* Returns the path object representing oNNode's absolute path. */
 Path_T Node_getPath(Node_T oNNode);
 
-/*write comments*/
+/* returns the type (0 or 1) of the argument oNNode, which
+   represents either a file or directory */
 int Node_getType(Node_T oNNode);
 
-/*write comments*/
+/* returns a void pointer to the contents of the input, oNNode
+   if oNNode is a file. */
 void *Node_getContents(Node_T oNNode);
 
-/*write comments*/
+/* returns size_t of the contents of oNNode's file */
 size_t Node_getContentSize(Node_T oNNode);
 
-/*write comments*/
+/* allows to set the contents of file oNNode with a void pointer
+ *newContent */
 void Node_setContents(Node_T oNNode, void *newContent);
 
-/*write comments*/
+/* allows to set the size, newSize, of the contents of the file
+   onNode */
 void Node_setContentSize(Node_T oNNode, size_t newSize);
 
 /*
