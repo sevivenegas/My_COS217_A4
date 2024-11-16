@@ -10,7 +10,8 @@
 #include "dynarray.h"
 #include "path.h"
 
-/* helper method to count nodes for invariant check for dtBad4 */
+/* helper method to recursively count nodes starting at oNNode for 
+invariant check for dtBad4. Returns size_t of number of nodes. */
 static size_t CheckerDT_countNodes(Node_T oNNode);
 
 /* see checkerDT.h for specification */
@@ -140,7 +141,7 @@ boolean CheckerDT_isValid(boolean bIsInitialized, Node_T oNRoot,
    return CheckerDT_treeCheck(oNRoot);
 }
 
-/* recursively counts total number of nodes in tree, starting from
+/* recursively counts and returns size_t of total number of nodes in tree, starting from
    given oNNode */
 static size_t CheckerDT_countNodes(Node_T oNNode)
 {
