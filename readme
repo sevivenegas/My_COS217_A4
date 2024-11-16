@@ -141,6 +141,7 @@ your disagreements with them? Copy the splint warnings here, and
 express your disagreement after each warning. If there are no
 warnings, then write "None."
 
+None.
 
 
 ------------------------------------------------------------------------
@@ -149,7 +150,27 @@ your disagreements with them? Copy the critTer warnings here, and
 express your disagreement after each warning. If there are no
 warnings, then write "None."
 
+   ft.c: line 179: medium priority:
+   Do you want to validate 'pvContents' through an assert?
 
+   ft.c: line 341: medium priority:
+   Do you want to validate 'pvNewContents' through an assert?
+
+   NodeFT.c: line 79: medium priority:
+   Do you want to validate 'addContents' through an assert?
+
+   NodeFT.c: line 281: medium priority:
+   Do you want to validate 'newContent' through an assert?
+
+We disagree with all of these warning because both all of these
+can be NULL and it is acceptable in this context. Asserts are used for 
+when an argument should never be NULL in a correct program. But, since 
+NULL is a valid state for these, asserting their validity would be 
+incorrect.
+
+There are additional critTer warnings, but those are all about too many 
+functions, too long loops, functions, or files, or too deeply nested code.
+Per the assignment specs, we do not need to address these warnings.
 
 ------------------------------------------------------------------------
 For each of the five faulty BDT implementations required by Step
