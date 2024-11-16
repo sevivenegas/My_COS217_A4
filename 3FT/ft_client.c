@@ -39,6 +39,7 @@ int main(void)
    assert(FT_rmFile("1root/2child/3gkid/4ggk") == INITIALIZATION_ERROR);
    assert((temp = FT_toString()) == NULL);
    assert(FT_destroy() == INITIALIZATION_ERROR);
+   fprintf(stderr, "works up to here 1");
 
    /* After initialization, the data structure is empty, so
       contains* should still return FALSE for any non-NULL string,
@@ -50,6 +51,7 @@ int main(void)
    assert((temp = FT_toString()) != NULL);
    assert(!strcmp(temp, ""));
    free(temp);
+   fprintf(stderr, "works up to here 2");
 
    /* A valid path must not:
     * be the empty string
@@ -65,6 +67,7 @@ int main(void)
    assert(FT_insertFile("/1root/2child", NULL, 0) == BAD_PATH);
    assert(FT_insertFile("1root/2child/", NULL, 0) == BAD_PATH);
    assert(FT_insertFile("1root//2child", NULL, 0) == BAD_PATH);
+   fprintf(stderr, "works up to here 3");
 
    /* putting a file at the root is illegal */
    assert(FT_insertFile("A", NULL, 0) == CONFLICTING_PATH);
@@ -94,6 +97,7 @@ int main(void)
    assert(FT_insertDir("1otherroot") == CONFLICTING_PATH);
    assert(FT_insertDir("1otherroot/2d") == CONFLICTING_PATH);
    assert(FT_insertFile("1otherroot/2f", NULL, 0) == CONFLICTING_PATH);
+   fprintf(stderr, "works up to here 4");
 
    /* Trying to insert a third child should succeed, unlike in BDT */
    assert(FT_insertFile("1root/2third", NULL, 0) == SUCCESS);
@@ -102,6 +106,7 @@ int main(void)
    assert(FT_containsDir("1root/2child") == TRUE);
    assert(FT_containsDir("1root/2second") == TRUE);
    assert(FT_containsDir("1root/2third") == FALSE);
+   fprintf(stderr, "works up to here 5");
    assert(FT_containsFile("1root/2third") == TRUE);
    assert(FT_containsDir("1root/2ok") == TRUE);
    assert(FT_containsDir("1root/2ok/3yes") == TRUE);
@@ -175,24 +180,18 @@ int main(void)
    assert(FT_insertDir("1root") == SUCCESS);
    assert(FT_insertFile("1root/H", "hello, world!",
                         strlen("hello, world!") + 1) == SUCCESS);
-   fprintf(stderr, "works up to here x");
    assert(!strcmp(FT_getFileContents("1root/H"), "hello, world!"));
-   fprintf(stderr, "works up to here y");
    bIsFile = FALSE;
    l = -1;
    assert(FT_stat("1root/H", &bIsFile, &l) == SUCCESS);
-   fprintf(stderr, "works up to here z");
    assert(bIsFile == TRUE);
-   fprintf(stderr, "works up to here 4");
    assert(l == (strlen("hello, world!") + 1));
    assert(!strcmp(FT_replaceFileContents("1root/H", "Kernighan",
                                          strlen("Kernighan") + 1),
                   "hello, world!"));
-   fprintf(stderr, "works up to here 5");
    assert(!strcmp((char *)FT_getFileContents("1root/H"), "Kernighan"));
    assert(FT_stat("1root/H", &bIsFile, &l) == SUCCESS);
    assert(bIsFile == TRUE);
-   fprintf(stderr, "works up to here 6");
    assert(l == (strlen("Kernighan") + 1));
    assert(!strcmp(FT_replaceFileContents("1root/H", arr, ARRLEN),
                   "Kernighan"));
