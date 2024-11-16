@@ -163,11 +163,9 @@ int main(void)
    assert(FT_rmDir("1anotherroot") == CONFLICTING_PATH);
    assert(FT_rmDir("1root") == SUCCESS);
    assert(FT_rmDir("1root") == NO_SUCH_PATH);
-   fprintf(stderr, "works up to here 1");
    assert(FT_containsDir("1root/2child") == FALSE);
    assert(FT_containsDir("1root") == FALSE);
    assert(FT_rmDir("1root") == NO_SUCH_PATH);
-   fprintf(stderr, "works up to here 2");
    assert(FT_rmDir("1anotherroot") == NO_SUCH_PATH);
    assert((temp = FT_toString()) != NULL);
    assert(!strcmp(temp, ""));
@@ -178,10 +176,13 @@ int main(void)
    fprintf(stderr, "works up to here 3");
    assert(FT_insertFile("1root/H", "hello, world!",
                         strlen("hello, world!") + 1) == SUCCESS);
+   fprintf(stderr, "works up to here x");
    assert(!strcmp(FT_getFileContents("1root/H"), "hello, world!"));
+   fprintf(stderr, "works up to here y");
    bIsFile = FALSE;
    l = -1;
    assert(FT_stat("1root/H", &bIsFile, &l) == SUCCESS);
+   fprintf(stderr, "works up to here z");
    assert(bIsFile == TRUE);
    fprintf(stderr, "works up to here 4");
    assert(l == (strlen("hello, world!") + 1));
