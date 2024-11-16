@@ -38,6 +38,7 @@ int main(void)
    assert(FT_containsFile("1root/2child/3gkid/4ggk") == FALSE);
    assert(FT_rmFile("1root/2child/3gkid/4ggk") == INITIALIZATION_ERROR);
    assert((temp = FT_toString()) == NULL);
+   assert(FT_destroy() == INITIALIZATION_ERROR);
 
    /* After initialization, the data structure is empty, so
       contains* should still return FALSE for any non-NULL string,
@@ -93,10 +94,8 @@ int main(void)
    assert(FT_insertDir("1otherroot") == CONFLICTING_PATH);
    assert(FT_insertDir("1otherroot/2d") == CONFLICTING_PATH);
    assert(FT_insertFile("1otherroot/2f", NULL, 0) == CONFLICTING_PATH);
-   assert(FT_destroy() == SUCCESS);
 
    /* Trying to insert a third child should succeed, unlike in BDT */
-
    assert(FT_insertFile("1root/2third", NULL, 0) == SUCCESS);
    assert(FT_insertDir("1root/2ok/3yes/4indeed") == SUCCESS);
    assert(FT_containsDir("1root") == TRUE);
@@ -114,7 +113,6 @@ int main(void)
    /* Children must be unique, but individual directories or files
       in different paths needn't be
    */
-
    assert(FT_insertFile("1root/2child/3gkid", NULL, 0) ==
           ALREADY_IN_TREE);
    assert(FT_insertDir("1root/2child/3gkid") == ALREADY_IN_TREE);
@@ -133,7 +131,6 @@ int main(void)
    free(temp);
 
    /* Attempting to insert a child of a file is illegal */
-
    assert(FT_insertDir("1root/2third/3nopeD") == NOT_A_DIRECTORY);
    assert(FT_containsDir("1root/2third/3nopeD") == FALSE);
    assert(FT_insertFile("1root/2third/3nopeF", NULL, 0) ==
@@ -145,7 +142,6 @@ int main(void)
       flavor should return SUCCESS and remove entire subtree rooted at
       that path
    */
-
    assert(FT_containsDir("1root/2child/3gkid") == TRUE);
    assert(FT_containsFile("1root/2second/3gfile") == TRUE);
    assert(FT_containsDir("1root/2second/3gfile") == FALSE);
@@ -164,7 +160,6 @@ int main(void)
    free(temp);
 
    /* removing the root doesn't uninitialize the structure */
-
    assert(FT_rmDir("1anotherroot") == CONFLICTING_PATH);
    assert(FT_rmDir("1root") == SUCCESS);
    assert(FT_rmDir("1root") == NO_SUCH_PATH);
@@ -214,7 +209,6 @@ int main(void)
 
    /* children should be printed in lexicographic order,
       depth first, file children before directory children */
-
    assert(FT_insertDir("1root/y") == SUCCESS);
    assert((temp = FT_toString()) != NULL);
    fprintf(stderr, "Checkpoint 4.1:\n%s\n", temp);
