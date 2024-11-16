@@ -353,23 +353,22 @@ int FT_stat(const char *pcPath, boolean *pbIsFile, size_t *pulSize)
    if (iStatus != SUCCESS)
       return iStatus;
 
-   if (Path_comparePath(pcPath, Node_getPath(oNFound)) != 0)
-   {
-      return NO_SUCH_PATH;
-   }
-
    /*success cases*/
    if (Node_getType(oNFound) == 0)
    {
       *pbIsFile = FALSE;
       return SUCCESS;
    }
+
    else
    {
       *pbIsFile = TRUE;
       *pulSize = Node_getContentSize(oNFound);
       return SUCCESS;
    }
+
+   if (Path_comparePath(pcPath, Node_getPath(oNFound)) != 0)
+      return NO_SUCH_PATH;
 }
 
 /*good*/
