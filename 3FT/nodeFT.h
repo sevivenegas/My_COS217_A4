@@ -59,7 +59,7 @@ size_t Node_getContentSize(Node_T oNNode);
 void Node_setContents(Node_T oNNode, void *newContent);
 
 /* allows to set the size, newSize, of the contents of the file
-   onNode */
+   oNNode */
 void Node_setContentSize(Node_T oNNode, size_t newSize);
 
 /*
