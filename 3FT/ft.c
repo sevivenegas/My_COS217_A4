@@ -69,7 +69,7 @@ int FT_insertDir(const char *pcPath)
 
       /* oNCurr is the node we're trying to insert */
       if (ulIndex == ulDepth + 1 &&
-          Path_comparePath(oPPath, Node_getPath(oNCurr)))
+          !Path_comparePath(oPPath, Node_getPath(oNCurr)))
       {
          Path_free(oPPath);
          return ALREADY_IN_TREE;
@@ -198,8 +198,8 @@ int FT_insertFile(const char *pcPath, void *pvContents,
    ulIndex = Path_getDepth(Node_getPath(oNCurr)) + 1;
 
    /* oNCurr is the node we're trying to insert */
-   if (ulIndex == ulDepth + 1 && Path_comparePath(oPPath,
-                                                  Node_getPath(oNCurr)))
+   if (ulIndex == ulDepth + 1 && !Path_comparePath(oPPath,
+                                                   Node_getPath(oNCurr)))
    {
       Path_free(oPPath);
       return ALREADY_IN_TREE;
