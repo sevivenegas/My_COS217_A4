@@ -255,8 +255,7 @@ int FT_insertFile(const char *pcPath, void *pvContents,
    if (oNRoot == NULL)
       oNRoot = oNFirstNew;
    ulCount += ulNewNodes;
-
-   /* assert(CheckerDT_isValid(bIsInitialized, oNRoot, ulCount)); */
+   
    return SUCCESS;
 }
 

@@ -173,7 +173,6 @@ int main(void)
 
    /* checking that file contents work as expected */
    assert(FT_insertDir("1root") == SUCCESS);
-   fprintf(stderr, "works up to here 3");
    assert(FT_insertFile("1root/H", "hello, world!",
                         strlen("hello, world!") + 1) == SUCCESS);
    fprintf(stderr, "works up to here x");
