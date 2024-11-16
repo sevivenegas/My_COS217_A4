@@ -154,9 +154,7 @@ int main(void)
    assert(FT_containsDir("1root/2child/3gkid") == FALSE);
    assert(FT_containsFile("1root/2second/3gfile") == FALSE);
    assert(FT_rmFile("1root/2child/2child/2child/2child") == SUCCESS);
-   fprintf(stderr, "works up to here 2");
    assert(FT_rmDir("1root/2child/2child") == SUCCESS);
-   fprintf(stderr, "works up to here 3");
    assert((temp = FT_toString()) != NULL);
    fprintf(stderr, "Checkpoint 3:\n%s\n", temp);
    free(temp);
@@ -165,9 +163,11 @@ int main(void)
    assert(FT_rmDir("1anotherroot") == CONFLICTING_PATH);
    assert(FT_rmDir("1root") == SUCCESS);
    assert(FT_rmDir("1root") == NO_SUCH_PATH);
+   fprintf(stderr, "works up to here 1");
    assert(FT_containsDir("1root/2child") == FALSE);
    assert(FT_containsDir("1root") == FALSE);
    assert(FT_rmDir("1root") == NO_SUCH_PATH);
+   fprintf(stderr, "works up to here 2");
    assert(FT_rmDir("1anotherroot") == NO_SUCH_PATH);
    assert((temp = FT_toString()) != NULL);
    assert(!strcmp(temp, ""));
@@ -175,6 +175,7 @@ int main(void)
 
    /* checking that file contents work as expected */
    assert(FT_insertDir("1root") == SUCCESS);
+   fprintf(stderr, "works up to here 3");
    assert(FT_insertFile("1root/H", "hello, world!",
                         strlen("hello, world!") + 1) == SUCCESS);
    assert(!strcmp(FT_getFileContents("1root/H"), "hello, world!"));
@@ -182,13 +183,16 @@ int main(void)
    l = -1;
    assert(FT_stat("1root/H", &bIsFile, &l) == SUCCESS);
    assert(bIsFile == TRUE);
+   fprintf(stderr, "works up to here 4");
    assert(l == (strlen("hello, world!") + 1));
    assert(!strcmp(FT_replaceFileContents("1root/H", "Kernighan",
                                          strlen("Kernighan") + 1),
                   "hello, world!"));
+   fprintf(stderr, "works up to here 5");
    assert(!strcmp((char *)FT_getFileContents("1root/H"), "Kernighan"));
    assert(FT_stat("1root/H", &bIsFile, &l) == SUCCESS);
    assert(bIsFile == TRUE);
+   fprintf(stderr, "works up to here 6");
    assert(l == (strlen("Kernighan") + 1));
    assert(!strcmp(FT_replaceFileContents("1root/H", arr, ARRLEN),
                   "Kernighan"));
