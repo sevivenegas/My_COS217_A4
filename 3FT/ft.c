@@ -20,14 +20,17 @@ static Node_T oNRoot;
 static size_t ulCount;
 
 /* helper method to traverse path given oPPath and pointer to
-   poNFurthest */
+   poNFurthest and returns an int ____ */
 static int FT_traversePath(Path_T oPPath, Node_T *poNFurthest);
+
 /* helper method to traverse path given pcPath and pointer to
-   poNFurthest */
+   poNResult and returns an int ____ */
 static int FT_findNode(const char *pcPath, Node_T *poNResult);
+
 /* helper method to _______ given oNNode and pointer to
    pulAcc */
 static void FT_strlenAccumulate(Node_T oNNode, size_t *pulAcc);
+
 /* helper method to _______ given oNNode and pointer to
    pcAcc */
 static void FT_strcatAccumulate(Node_T oNNode, char *pcAcc);
@@ -418,7 +421,7 @@ int FT_destroy(void)
 }
 
 /* as explained above, this is a static helper function that located
-   a node given pcPath and poNResult */
+   a node given pcPath and poNResult and returns an int */
 static int FT_findNode(const char *pcPath, Node_T *poNResult)
 {
    Path_T oPPath = NULL;
@@ -469,7 +472,7 @@ static int FT_findNode(const char *pcPath, Node_T *poNResult)
 }
 
 /* as explained above, this is a static helper function that traverses
-   a node given oPPath and poNFurthest */
+   a node given oPPath and poNFurthest and returns an int */
 static int FT_traversePath(Path_T oPPath, Node_T *poNFurthest)
 {
    int iStatus;
