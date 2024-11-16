@@ -76,7 +76,6 @@ int Node_new(Path_T oPPath, Node_T oNParent, Node_T *poNResult,
              int type, void *addContents, size_t cSize)
 {
    assert(poNResult != NULL);
-   assert(addContents != NULL);
 
    struct node *psNew;
    Path_T oPParentPath = NULL;
@@ -280,7 +279,6 @@ size_t Node_getContentSize(Node_T oNNode)
 void Node_setContents(Node_T oNNode, void *newContent)
 {
    assert(oNNode != NULL);
-   assert(newContent != NULL);
 
    oNNode->contents = newContent;
 }
