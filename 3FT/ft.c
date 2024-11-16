@@ -45,7 +45,8 @@ int FT_insertDir(const char *pcPath)
    Path_T oPPath = NULL;
    Node_T oNFirstNew = NULL;
    Node_T oNCurr = NULL;
-   size_t ulDepth, ulIndex;
+   size_t ulDepth;
+   size_t ulIndex = 0;
    size_t ulNewNodes = 0;
 
    assert(pcPath != NULL);
