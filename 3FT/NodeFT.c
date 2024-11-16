@@ -45,7 +45,6 @@ static int Node_addChild(Node_T oNParent, Node_T oNChild,
    else
       return MEMORY_ERROR;
 }
-/*good*/
 
 /*
   Compares the string representation of oNfirst with a string
@@ -211,8 +210,6 @@ int Node_new(Path_T oPPath, Node_T oNParent, Node_T *poNResult,
 
    *poNResult = psNew;
 
-   /* assert(oNParent == NULL || CheckerDT_Node_isValid(oNParent)); */
-
    return SUCCESS;
 }
 
@@ -272,30 +269,24 @@ void *Node_getContents(Node_T oNNode)
    return oNNode->contents;
 }
 
-/*good*/
 size_t Node_getContentSize(Node_T oNNode)
 {
    assert(oNNode != NULL);
    return oNNode->contentSize;
 }
 
-/*good*/
 void Node_setContents(Node_T oNNode, void *newContent)
 {
    assert(oNNode != NULL);
    oNNode->contents = newContent;
 }
 
-/*good*/
 void Node_setContentSize(Node_T oNNode, size_t newSize)
 {
    assert(oNNode != NULL);
    oNNode->contentSize = newSize;
 }
 
-/*ASK ASK ASK*/
-/*might wanna check over later it might have to account if chile is
-file or directory*/
 boolean Node_hasChild(Node_T oNParent, Path_T oPPath,
                       size_t *pulChildID)
 {
@@ -319,7 +310,6 @@ size_t Node_getNumChildren(Node_T oNParent)
    return DynArray_getLength(oNParent->oDChildren);
 }
 
-/*good?*/
 int Node_getChild(Node_T oNParent, size_t ulChildID,
                   Node_T *poNResult)
 {
@@ -344,7 +334,6 @@ int Node_getChild(Node_T oNParent, size_t ulChildID,
    }
 }
 
-/*good? I  thihk this return NULL right ASK ASK ASK*/
 Node_T Node_getParent(Node_T oNNode)
 {
    assert(oNNode != NULL);
@@ -360,7 +349,6 @@ int Node_compare(Node_T oNFirst, Node_T oNSecond)
    return Path_comparePath(oNFirst->oPPath, oNSecond->oPPath);
 }
 
-/*good*/
 char *Node_toString(Node_T oNNode)
 {
    char *copyPath;

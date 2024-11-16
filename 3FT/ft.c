@@ -58,7 +58,7 @@ int FT_insertDir(const char *pcPath)
    if (oNCurr == NULL) /* new root! */
       ulIndex = 1;
    else if (Node_getType(oNCurr) == 1)
-   { /*attempt to find bug SEVI*/
+   {
       Path_free(oPPath);
       return NOT_A_DIRECTORY;
    }
@@ -117,7 +117,6 @@ int FT_insertDir(const char *pcPath)
       oNRoot = oNFirstNew;
    ulCount += ulNewNodes;
 
-   /*assert(CheckerDT_isValid(bIsInitialized, oNRoot, ulCount));*/
    return SUCCESS;
 }
 
@@ -157,7 +156,6 @@ int FT_rmDir(const char *pcPath)
 int FT_insertFile(const char *pcPath, void *pvContents,
                   size_t ulLength)
 {
-   /*can pvcontents and ullength be NULL?*/
    int iStatus;
    Path_T oPPath = NULL;
    Node_T oNFirstNew = NULL;
@@ -166,7 +164,6 @@ int FT_insertFile(const char *pcPath, void *pvContents,
    size_t ulNewNodes = 0;
 
    assert(pcPath != NULL);
-   /*assert(CheckerDT_isValid(bIsInitialized, oNRoot, ulCount));*/
 
    /* validate pcPath and generate a Path_T for it */
    if (!bIsInitialized)
@@ -221,13 +218,11 @@ int FT_insertFile(const char *pcPath, void *pvContents,
          Path_free(oPPath);
          if (oNFirstNew != NULL)
             (void)Node_free(oNFirstNew);
-         /* assert(CheckerDT_isValid(bIsInitialized, oNRoot, ulCount));
-          */
+
          return iStatus;
       }
 
       /* insert the new node for this level */
-      /*new node looks a bit different here right? and dont change dir*/
       if (ulIndex == ulDepth)
          iStatus = Node_new(oPPrefix, oNCurr, &oNNewNode, 1, pvContents,
                             ulLength);
@@ -313,7 +308,6 @@ void *FT_getFileContents(const char *pcPath)
    return FALSE;
 }
 
-/*ASK if you have to anything werid free or just pointer too*/
 void *FT_replaceFileContents(const char *pcPath, void *pvNewContents,
                              size_t ulNewLength)
 {
@@ -341,7 +335,6 @@ void *FT_replaceFileContents(const char *pcPath, void *pvNewContents,
    return NULL;
 }
 
-/*good i think? need to get looked over ASK ASK ASK*/
 int FT_stat(const char *pcPath, boolean *pbIsFile, size_t *pulSize)
 {
    Node_T oNFound;
@@ -442,24 +435,12 @@ static int FT_findNode(const char *pcPath, Node_T *poNResult)
       return NO_SUCH_PATH;
    }
 
-   /*do not tamper with ASK ASK ASK*/
    if (Path_comparePath(Node_getPath(oNFound), oPPath) != 0)
    {
       Path_free(oPPath);
       *poNResult = NULL;
       return NO_SUCH_PATH;
    }
-
-   /* if (Node_getType(oNFound) != nodeType &&
-       Path_comparePath(Node_getPath(oNFound), oPPath) == 0)
-   {
-      Path_free(oPPath);
-      *poNResult = NULL;
-      if (nodeType == 1)
-         return NOT_A_FILE;
-      else
-         return NOT_A_DIRECTORY;
-   } */
 
    Path_free(oPPath);
    *poNResult = oNFound;
@@ -642,5 +623,3 @@ static void FT_strcatAccumulate(Node_T oNNode, char *pcAcc)
       strcat(pcAcc, "\n");
    }
 }
-
-/*----------------------------------------------------------------*/
