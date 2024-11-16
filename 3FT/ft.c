@@ -129,6 +129,7 @@ boolean FT_containsDir(const char *pcPath)
    assert(pcPath != NULL);
 
    iStatus = FT_findNode(pcPath, &oNFound);
+
    return (boolean)(iStatus == SUCCESS && Node_getType(oNFound) == 0);
 }
 
@@ -141,9 +142,7 @@ int FT_rmDir(const char *pcPath)
 
    iStatus = FT_findNode(pcPath, &oNFound);
    if (Node_getType(oNFound) == 1)
-   {
       return NOT_A_DIRECTORY;
-   }
 
    if (iStatus != SUCCESS)
       return iStatus;
@@ -310,6 +309,8 @@ void *FT_getFileContents(const char *pcPath)
 
    if (Node_getType(oNFound) == 1)
       return Node_getContents(oNFound);
+   else
+      return NOT_A_FILE;
 
    return FALSE;
 }
@@ -329,9 +330,8 @@ void *FT_replaceFileContents(const char *pcPath, void *pvNewContents,
 
    iStatus = FT_traversePath(input, &oNFound);
    if (iStatus != SUCCESS)
-   {
       return NULL;
-   }
+
    if (Node_getType(oNFound) == 1)
    {
       oldContent = Node_getContents(oNFound);
@@ -339,7 +339,8 @@ void *FT_replaceFileContents(const char *pcPath, void *pvNewContents,
       Node_setContentSize(oNFound, ulNewLength);
       return oldContent;
    }
-   return NULL;
+   else
+      return NOT_A_FILE;
 }
 
 /*good i think? need to get looked over ASK ASK ASK*/
