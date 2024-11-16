@@ -87,6 +87,8 @@ int Node_new(Path_T oPPath, Node_T oNParent, Node_T *poNResult,
    assert(oPPath != NULL);
    assert(poNResult != NULL);
 
+   ulIndex = 0;
+
    /* allocate space for a new node */
    psNew = malloc(sizeof(struct node));
    if (psNew == NULL)
