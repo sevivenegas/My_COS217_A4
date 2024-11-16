@@ -15,8 +15,7 @@ static Node_T oNRoot;
 static size_t ulCount;
 
 static int FT_traversePath(Path_T oPPath, Node_T *poNFurthest);
-static int FT_findNode(const char *pcPath, Node_T *poNResult,
-                       int nodeType);
+static int FT_findNode(const char *pcPath, Node_T *poNResult);
 static void FT_strlenAccumulate(Node_T oNNode, size_t *pulAcc);
 static void FT_strcatAccumulate(Node_T oNNode, char *pcAcc);
 
@@ -129,8 +128,8 @@ boolean FT_containsDir(const char *pcPath)
 
    assert(pcPath != NULL);
 
-   iStatus = FT_findNode(pcPath, &oNFound, 0);
-   return (boolean)(iStatus == SUCCESS);
+   iStatus = FT_findNode(pcPath, &oNFound);
+   return (boolean)(iStatus == SUCCESS && Node_getType(oNFound) == 0);
 }
 
 int FT_rmDir(const char *pcPath)
@@ -140,7 +139,12 @@ int FT_rmDir(const char *pcPath)
 
    assert(pcPath != NULL);
 
-   iStatus = FT_findNode(pcPath, &oNFound, 0);
+   iStatus = FT_findNode(pcPath, &oNFound);
+   if (Node_getType(oNFound) == 1)
+   {
+      return NOT_A_DIRECTORY;
+   }
+
    if (iStatus != SUCCESS)
       return iStatus;
 
@@ -266,8 +270,8 @@ boolean FT_containsFile(const char *pcPath)
 
    assert(pcPath != NULL);
 
-   iStatus = FT_findNode(pcPath, &oNFound, 1);
-   return (boolean)(iStatus == SUCCESS);
+   iStatus = FT_findNode(pcPath, &oNFound);
+   return (boolean)(iStatus == SUCCESS && Node_getType(oNFound) == 1);
 }
 
 int FT_rmFile(const char *pcPath)
@@ -277,7 +281,10 @@ int FT_rmFile(const char *pcPath)
 
    assert(pcPath != NULL);
 
-   iStatus = FT_findNode(pcPath, &oNFound, 1);
+   iStatus = FT_findNode(pcPath, &oNFound);
+   if (Node_getType(oNFound) == 0)
+      return NOT_A_FILE;
+
    if (iStatus != SUCCESS)
       return iStatus;
 
@@ -349,10 +356,7 @@ int FT_stat(const char *pcPath, boolean *pbIsFile, size_t *pulSize)
    if (iStatus != SUCCESS)
       return iStatus;
 
-   iStatus = FT_findNode(pcPath, &oNFound, 0);
-   /* if (iStatus == NO_SUCH_PATH) {
-      return NO_SUCH_PATH;
-   } */
+   iStatus = FT_findNode(pcPath, &oNFound);
 
    if (iStatus != SUCCESS)
       return iStatus;
@@ -370,9 +374,6 @@ int FT_stat(const char *pcPath, boolean *pbIsFile, size_t *pulSize)
       *pulSize = Node_getContentSize(oNFound);
       return SUCCESS;
    }
-
-   /* if (Path_comparePath(pcPath, Node_getPath(oNFound)) != 0)
-      return NO_SUCH_PATH; */
 }
 
 /*good*/
@@ -405,8 +406,7 @@ int FT_destroy(void)
    return SUCCESS;
 }
 
-static int FT_findNode(const char *pcPath, Node_T *poNResult,
-                       int nodeType)
+static int FT_findNode(const char *pcPath, Node_T *poNResult)
 {
    Path_T oPPath = NULL;
    Node_T oNFound = NULL;
@@ -451,7 +451,7 @@ static int FT_findNode(const char *pcPath, Node_T *poNResult,
       return NO_SUCH_PATH;
    }
 
-   if (Node_getType(oNFound) != nodeType &&
+   /* if (Node_getType(oNFound) != nodeType &&
        Path_comparePath(Node_getPath(oNFound), oPPath) == 0)
    {
       Path_free(oPPath);
@@ -460,7 +460,7 @@ static int FT_findNode(const char *pcPath, Node_T *poNResult,
          return NOT_A_FILE;
       else
          return NOT_A_DIRECTORY;
-   }
+   } */
 
    Path_free(oPPath);
    *poNResult = oNFound;
