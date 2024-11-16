@@ -340,7 +340,7 @@ size_t Path_getSharedPrefixDepth(Path_T oPPath1, Path_T oPPath2)
    return ulMin;
 }
 
-const char *Path_getComponent(Path_T oPPath, size_t ulLevel)
+static const char *Path_getComponent(Path_T oPPath, size_t ulLevel)
 {
    assert(oPPath != NULL);
 
