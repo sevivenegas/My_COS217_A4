@@ -1,6 +1,7 @@
 /*--------------------------------------------------------------------*/
 /* ft.h                                                               */
-/* Author: Christopher Moretti and Vikash Modi '23                    */
+/* Author: Christopher Moretti, Vikash Modi '23,                      */
+/*         Sevastian Venegas and Neha Ayyalapu                        */
 /*--------------------------------------------------------------------*/
 
 #ifndef FT_INCLUDED

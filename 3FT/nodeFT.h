@@ -1,6 +1,6 @@
 /*--------------------------------------------------------------------*/
 /* nodeFT.h                                                           */
-/* Author: Christopher Moretti                                        */
+/* Author: Christopher Moretti, Sevastian Venegas and Neha Ayyalapu   */
 /*--------------------------------------------------------------------*/
 
 #ifndef NODE_INCLUDED

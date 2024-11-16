@@ -20,19 +20,28 @@ static size_t ulCount;
 
 /* Finds a node in the file tree based on the given path pcPath.
    If the node exists, stores it in `poNResult`. Returns 0 if successful
-   and returns an error code if the tree is not initialized, the path is
-   invalid, or the node cannot be found.
+   and returns an error code otherwise:
+   * INITIALIZATION_ERROR if the FT is not in an initialized state 
+   * BAD_PATH if pcPath does not represent a well-formatted path 
+   * CONFLICTING_PATH if the root exists but is not a prefix of pcPath
+   * MEMORY_ERROR if memory could not be allocated to complete request 
+   * NO_SUCH_PATH if absolute path pcPath does not exist in the FT
  */
 static int FT_findNode(const char *pcPath, Node_T *poNResult);
 
 /* Traverses a path represented by oPPath. Finds the furthest valid node
    along the path and stores it in poNFurthest. Returns 0 if traversal
-   succeeds, or an error otherwise.
+   succeeds, or an error otherwise:
+   * INITIALIZATION_ERROR if the FT is not in an initialized state 
+   * BAD_PATH if pcPath does not represent a well-formatted path 
+   * NOT_A_DIRECTORY if an ancestor is a file
+   * CONFLICTING_PATH if the root exists but is not a prefix of pcPath
+   * MEMORY_ERROR if memory could not be allocated to complete request 
  */
 static int FT_traversePath(Path_T oPPath, Node_T *poNFurthest);
 
 /* Accumulates total string length of oNNode's path. Uses pulAcc as an
-   in-out parameter and always adds one addition byte to the sum. */
+   in-out parameter and always adds one addition byte to the sum.*/
 static void FT_strlenAccumulate(Node_T oNNode, size_t *pulAcc);
 
 /* Appends oNNode's path onto pcAcc, and always adds one newline at the
@@ -133,7 +142,7 @@ int FT_insertDir(const char *pcPath)
    }
 
    Path_free(oPPath);
-   /* update DT state variables to reflect insertion */
+   /* update FT state variables to reflect insertion */
    if (oNRoot == NULL)
       oNRoot = oNFirstNew;
    ulCount += ulNewNodes;
@@ -270,7 +279,7 @@ int FT_insertFile(const char *pcPath, void *pvContents,
    }
 
    Path_free(oPPath);
-   /* update DT state variables to reflect insertion */
+   /* update FT state variables to reflect insertion */
    if (oNRoot == NULL)
       oNRoot = oNFirstNew;
    ulCount += ulNewNodes;

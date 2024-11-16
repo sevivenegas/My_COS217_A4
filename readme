@@ -110,7 +110,9 @@ Unfortunately not very fun. A little bit helpful.
 Student 2: What is your assessment of the assignment? Was it helpful?
 Was it fun?
 
-It was aight. 
+The assignment was overall ok. I found part 1 and 2 really tedious and daunting
+which took a majority of our time. Part 3 was similar to previous assignments
+though the challenging aspect was using and changing premade code.
 
 ------------------------------------------------------------------------
 (optional) What information can you provide about your submission that
@@ -125,7 +127,8 @@ your disagreements with them? Copy the splint warnings here, and
 express your disagreement after each warning. If there are no
 warnings, then write "None."
 
-
+None. Besides splint warnings that are related to provided files that we
+do not edit.
 
 ------------------------------------------------------------------------
 What warnings does critTer generate on checkerDT.c, and what are your
@@ -133,7 +136,9 @@ disagreements with them? Copy the critTer warnings here, and express
 your disagreement after each warning. If there are no warnings, then
 write "None."
 
-
+None. Besides critTer warnings that are all about too many 
+functions, too long loops, functions, or files, or too deeply nested code.
+Per the assignment specs, we do not need to address these warnings.
 
 ------------------------------------------------------------------------
 What warnings does splint generate on your Part 3 code, and what are
@@ -197,13 +202,20 @@ the error manifests itself or is "noticed" by the client.
 What are your critiques of the given DT implementations, as
 specified in Step 2.5?
 
-- module bloat in Node. some methods are basically just calling another 
-  function. would be better to just call the other function in the first
-  place.
+- Poor naming conventions for DT_preOrderTraversal. for example, the
+  arguments are: Node_T n, DynArray_T d, size_t i, and single-letter
+  names can be vague or confusing.
 
-- poor naming conventions for DT_preOrderTraversal (arguments are only
-  one letter!)
+- Some static methods are basically just calling another function.
+  it would be better to just call the other function in the first place.
+  For example, Node_compare in nodeDTGood.c just has a couple assert 
+  statements and then returns a call to Path_comparePath(). similarly, 
+  Node_compareString has a few assert statements and then returns a call 
+  to Path_compareString(). for both, you could just eliminate the static 
+  function and call the Path function
+      
 
-- excessive checks at the beginning of DT_insert
+- In nodeDTGood.c, *psNew is initialized as a struct node, while every
+  other node is initialized as a Node_T.
 
 ------------------------------------------------------------------------
