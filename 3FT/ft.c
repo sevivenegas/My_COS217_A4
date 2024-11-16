@@ -349,9 +349,15 @@ int FT_stat(const char *pcPath, boolean *pbIsFile, size_t *pulSize)
    if (iStatus != SUCCESS)
       return iStatus;
 
-   iStatus = FT_traversePath(input, &oNFound);
+   iStatus = FT_findNode(pcPath, &oNFound, 0);
+   if (iStatus == NO_SUCH_PATH)
+   {
+      return NO_SUCH_PATH;
+   }
+
+   /* iStatus = FT_traversePath(input, &oNFound);
    if (iStatus != SUCCESS)
-      return iStatus;
+      return iStatus; */
 
    /*success cases*/
    if (Node_getType(oNFound) == 0)
@@ -367,8 +373,8 @@ int FT_stat(const char *pcPath, boolean *pbIsFile, size_t *pulSize)
       return SUCCESS;
    }
 
-   if (Path_comparePath(pcPath, Node_getPath(oNFound)) != 0)
-      return NO_SUCH_PATH;
+   /* if (Path_comparePath(pcPath, Node_getPath(oNFound)) != 0)
+      return NO_SUCH_PATH; */
 }
 
 /*good*/
@@ -401,7 +407,6 @@ int FT_destroy(void)
    return SUCCESS;
 }
 
-/*----------------------------------------------------------------*/
 static int FT_findNode(const char *pcPath, Node_T *poNResult,
                        int nodeType)
 {
