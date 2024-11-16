@@ -424,37 +424,6 @@ int FT_destroy(void)
    return SUCCESS;
 }
 
-char *FT_toString(void)
-{
-   DynArray_T nodes;
-   size_t totalStrlen = 1;
-   char *result = NULL;
-
-   if (!bIsInitialized)
-      return NULL;
-
-   nodes = DynArray_new(ulCount);
-   (void)FT_preOrderTraversal(oNRoot, nodes, 0);
-
-   DynArray_map(nodes, (void (*)(void *, void *))FT_strlenAccumulate,
-                (void *)&totalStrlen);
-
-   result = malloc(totalStrlen);
-   if (result == NULL)
-   {
-      DynArray_free(nodes);
-      return NULL;
-   }
-   *result = '\0';
-
-   DynArray_map(nodes, (void (*)(void *, void *))FT_strcatAccumulate,
-                (void *)result);
-
-   DynArray_free(nodes);
-
-   return result;
-}
-
 /* As explained above, a static helper function that:
    Finds a node in the file tree based on the given path pcPath.
    If the node exists, stores it in `poNResult`. Returns 0 if successful
@@ -659,4 +628,35 @@ static size_t FT_preOrderTraversal(Node_T n, DynArray_T d, size_t i)
       }
    }
    return i;
+}
+
+char *FT_toString(void)
+{
+   DynArray_T nodes;
+   size_t totalStrlen = 1;
+   char *result = NULL;
+
+   if (!bIsInitialized)
+      return NULL;
+
+   nodes = DynArray_new(ulCount);
+   (void)FT_preOrderTraversal(oNRoot, nodes, 0);
+
+   DynArray_map(nodes, (void (*)(void *, void *))FT_strlenAccumulate,
+                (void *)&totalStrlen);
+
+   result = malloc(totalStrlen);
+   if (result == NULL)
+   {
+      DynArray_free(nodes);
+      return NULL;
+   }
+   *result = '\0';
+
+   DynArray_map(nodes, (void (*)(void *, void *))FT_strcatAccumulate,
+                (void *)result);
+
+   DynArray_free(nodes);
+
+   return result;
 }
