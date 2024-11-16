@@ -510,6 +510,7 @@ static int FT_traversePath(Path_T oPPath, Node_T *poNFurthest)
       if (Node_getType(oNCurr) == 1)
       {
          *poNFurthest = NULL;
+         Path_free(oPPrefix);
          return NOT_A_DIRECTORY;
       }
       if (Node_hasChild(oNCurr, oPPrefix, &ulChildID))
