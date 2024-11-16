@@ -301,10 +301,15 @@ void *FT_getFileContents(const char *pcPath)
 
    assert(pcPath != NULL);
 
-   if (Path_new((const char *)pcPath, &input))
+   iStatus = Path_new((const char *)pcPath, &input);
+   if (iStatus != SUCCESS)
+   {
       return FALSE;
+   }
 
    iStatus = FT_traversePath(input, &oNFound);
+   Path_free(input);
+
    if (iStatus != SUCCESS)
       return FALSE;
 
