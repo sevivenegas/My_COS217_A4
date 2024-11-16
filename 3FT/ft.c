@@ -309,8 +309,6 @@ void *FT_getFileContents(const char *pcPath)
 
    if (Node_getType(oNFound) == 1)
       return Node_getContents(oNFound);
-   else
-      return NOT_A_FILE;
 
    return FALSE;
 }
@@ -339,8 +337,8 @@ void *FT_replaceFileContents(const char *pcPath, void *pvNewContents,
       Node_setContentSize(oNFound, ulNewLength);
       return oldContent;
    }
-   else
-      return NOT_A_FILE;
+
+   return NULL;
 }
 
 /*good i think? need to get looked over ASK ASK ASK*/

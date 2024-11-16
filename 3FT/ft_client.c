@@ -31,22 +31,14 @@ int main(void)
     * toString should return NULL.
     */
    assert(FT_insertDir("1root/2child/3gkid") == INITIALIZATION_ERROR);
-   fprintf(stderr, "works up to here z");
    assert(FT_containsDir("1root/2child/3gkid") == FALSE);
-   fprintf(stderr, "works up to here y");
    assert(FT_rmDir("1root/2child/3gkid") == INITIALIZATION_ERROR);
-   fprintf(stderr, "works up to here x");
    assert(FT_insertFile("1root/2child/3gkid/4ggk", NULL, 0) ==
           INITIALIZATION_ERROR);
-   fprintf(stderr, "works up to here w");
    assert(FT_containsFile("1root/2child/3gkid/4ggk") == FALSE);
-   fprintf(stderr, "works up to here v");
    assert(FT_rmFile("1root/2child/3gkid/4ggk") == INITIALIZATION_ERROR);
-   fprintf(stderr, "works up to here u");
    assert((temp = FT_toString()) == NULL);
-   fprintf(stderr, "works up to here a");
    assert(FT_destroy() == INITIALIZATION_ERROR);
-   fprintf(stderr, "works up to here 1");
 
    /* After initialization, the data structure is empty, so
       contains* should still return FALSE for any non-NULL string,
@@ -58,7 +50,6 @@ int main(void)
    assert((temp = FT_toString()) != NULL);
    assert(!strcmp(temp, ""));
    free(temp);
-   fprintf(stderr, "works up to here 2");
 
    /* A valid path must not:
     * be the empty string
@@ -74,7 +65,6 @@ int main(void)
    assert(FT_insertFile("/1root/2child", NULL, 0) == BAD_PATH);
    assert(FT_insertFile("1root/2child/", NULL, 0) == BAD_PATH);
    assert(FT_insertFile("1root//2child", NULL, 0) == BAD_PATH);
-   fprintf(stderr, "works up to here 3");
 
    /* putting a file at the root is illegal */
    assert(FT_insertFile("A", NULL, 0) == CONFLICTING_PATH);
@@ -104,7 +94,6 @@ int main(void)
    assert(FT_insertDir("1otherroot") == CONFLICTING_PATH);
    assert(FT_insertDir("1otherroot/2d") == CONFLICTING_PATH);
    assert(FT_insertFile("1otherroot/2f", NULL, 0) == CONFLICTING_PATH);
-   fprintf(stderr, "works up to here 4");
 
    /* Trying to insert a third child should succeed, unlike in BDT */
    assert(FT_insertFile("1root/2third", NULL, 0) == SUCCESS);
@@ -113,7 +102,6 @@ int main(void)
    assert(FT_containsDir("1root/2child") == TRUE);
    assert(FT_containsDir("1root/2second") == TRUE);
    assert(FT_containsDir("1root/2third") == FALSE);
-   fprintf(stderr, "works up to here 5");
    assert(FT_containsFile("1root/2third") == TRUE);
    assert(FT_containsDir("1root/2ok") == TRUE);
    assert(FT_containsDir("1root/2ok/3yes") == TRUE);
