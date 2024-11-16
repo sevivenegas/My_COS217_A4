@@ -37,7 +37,7 @@ static int Node_addChild(Node_T oNParent, Node_T oNChild,
 {
    assert(oNParent != NULL);
    assert(oNChild != NULL);
-   /*a parent must be a directory*/
+   /* a parent must be a directory */
    assert(oNParent->type == 0);
 
    if (DynArray_addAt(oNParent->oDChildren, ulIndex, oNChild))
@@ -92,7 +92,7 @@ int Node_new(Path_T oPPath, Node_T oNParent, Node_T *poNResult,
       *poNResult = NULL;
       return MEMORY_ERROR;
    }
-   /*determines if it is a file or directory*/
+   /* determines if it is a file or directory */
    psNew->type = type;
 
    /* set the new node's path */
@@ -114,7 +114,7 @@ int Node_new(Path_T oPPath, Node_T oNParent, Node_T *poNResult,
       ulParentDepth = Path_getDepth(oPParentPath);
       ulSharedDepth = Path_getSharedPrefixDepth(psNew->oPPath,
                                                 oPParentPath);
-      /*file must be a leaf and cannot be a parent*/
+      /* file must be a leaf and cannot be a parent */
       if (oNParent->type == 1)
       {
          Path_free(psNew->oPPath);
@@ -152,7 +152,7 @@ int Node_new(Path_T oPPath, Node_T oNParent, Node_T *poNResult,
    }
    else
    {
-      /*root cannot be a file*/
+      /* root cannot be a file */
       if (psNew->type == 1)
       {
          Path_free(psNew->oPPath);
@@ -189,13 +189,12 @@ int Node_new(Path_T oPPath, Node_T oNParent, Node_T *poNResult,
 
    else if (type == 1)
    {
-      /*do we still asign an array or null?*/
       psNew->oDChildren = NULL;
       psNew->contents = addContents;
       psNew->contentSize = cSize;
    }
 
-   /* Link into parent's children list */
+   /* link into parent's children list */
    if (oNParent != NULL)
    {
       iStatus = Node_addChild(oNParent, psNew, ulIndex);
@@ -236,7 +235,6 @@ size_t Node_free(Node_T oNNode)
    {
       while (DynArray_getLength(oNNode->oDChildren) != 0)
       {
-         /*dyn remove at*/
          ulCount += Node_free(DynArray_removeAt(oNNode->oDChildren, 0));
       }
       DynArray_free(oNNode->oDChildren);
@@ -353,12 +351,12 @@ int Node_compare(Node_T oNFirst, Node_T oNSecond)
 char *Node_toString(Node_T oNNode)
 {
    char *copyPath;
-
    assert(oNNode != NULL);
 
    copyPath = malloc(Path_getStrLength(Node_getPath(oNNode)) + 1);
    if (copyPath == NULL)
       return NULL;
+
    else
       return strcpy(copyPath, Path_getPathname(Node_getPath(oNNode)));
 }

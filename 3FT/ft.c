@@ -1,3 +1,8 @@
+/*--------------------------------------------------------------------*/
+/* ft.c                                                               */
+/* Author: Sevastian Venegas & Neha Ayyalapu                          */
+/*--------------------------------------------------------------------*/
+
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
@@ -14,13 +19,17 @@ static Node_T oNRoot;
 /* 3. a counter of the number of nodes in the hierarchy */
 static size_t ulCount;
 
-/* helper method */
+/* helper method to traverse path given oPPath and pointer to
+   poNFurthest */
 static int FT_traversePath(Path_T oPPath, Node_T *poNFurthest);
-/* helper method */
+/* helper method to traverse path given pcPath and pointer to
+   poNFurthest */
 static int FT_findNode(const char *pcPath, Node_T *poNResult);
-/* helper method */
+/* helper method to _______ given oNNode and pointer to
+   pulAcc */
 static void FT_strlenAccumulate(Node_T oNNode, size_t *pulAcc);
-/* helper method */
+/* helper method to _______ given oNNode and pointer to
+   pcAcc */
 static void FT_strcatAccumulate(Node_T oNNode, char *pcAcc);
 
 int FT_insertDir(const char *pcPath)
@@ -327,6 +336,8 @@ void *FT_replaceFileContents(const char *pcPath, void *pvNewContents,
    Path_T input;
    int iStatus = Path_new((const char *)pcPath, &input);
 
+   assert(pcPath != NULL);
+
    if (iStatus != SUCCESS)
       return FALSE;
 
@@ -358,10 +369,6 @@ int FT_stat(const char *pcPath, boolean *pbIsFile, size_t *pulSize)
 
    if (!bIsInitialized)
       return INITIALIZATION_ERROR;
-
-   /* iStatus = Path_new(pcPath, &input);
-   if (iStatus != SUCCESS)
-      return iStatus; */
 
    iStatus = FT_findNode(pcPath, &oNFound);
 
@@ -410,7 +417,8 @@ int FT_destroy(void)
    return SUCCESS;
 }
 
-/* explain */
+/* as explained above, this is a static helper function that located
+   a node given pcPath and poNResult */
 static int FT_findNode(const char *pcPath, Node_T *poNResult)
 {
    Path_T oPPath = NULL;
@@ -460,7 +468,8 @@ static int FT_findNode(const char *pcPath, Node_T *poNResult)
    return SUCCESS;
 }
 
-/* explain */
+/* as explained above, this is a static helper function that traverses
+   a node given oPPath and poNFurthest */
 static int FT_traversePath(Path_T oPPath, Node_T *poNFurthest)
 {
    int iStatus;
@@ -507,18 +516,21 @@ static int FT_traversePath(Path_T oPPath, Node_T *poNFurthest)
          *poNFurthest = NULL;
          return iStatus;
       }
+
       if (Node_getType(oNCurr) == 1)
       {
          *poNFurthest = NULL;
          Path_free(oPPrefix);
          return NOT_A_DIRECTORY;
       }
+
       if (Node_hasChild(oNCurr, oPPrefix, &ulChildID))
       {
          /* go to that child and continue with next prefix */
          Path_free(oPPrefix);
          oPPrefix = NULL;
          iStatus = Node_getChild(oNCurr, ulChildID, &oNChild);
+
          if (iStatus != SUCCESS)
          {
             *poNFurthest = NULL;
@@ -526,6 +538,7 @@ static int FT_traversePath(Path_T oPPath, Node_T *poNFurthest)
          }
          oNCurr = oNChild;
       }
+
       else
       {
          /* oNCurr doesn't have child with path oPPrefix:
