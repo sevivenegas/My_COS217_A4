@@ -10,7 +10,7 @@
 #include "a4def.h"
 
 /* An object representing an absolute path in a tree */
-typedef const struct path *Path_T;
+typedef const struct path * Path_T;
 
 /*
   Creates a new path object representing the absolute path in pcPath.
@@ -91,6 +91,6 @@ size_t Path_getSharedPrefixDepth(Path_T oPPath1, Path_T oPPath2);
   would be returned.
   Returns NULL if ulLevel is greater than oPPath's maxium level.
 */
-static const char *Path_getComponent(Path_T oPPath, size_t ulLevel);
+const char *Path_getComponent(Path_T oPPath, size_t ulLevel);
 
 #endif
