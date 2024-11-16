@@ -321,19 +321,19 @@ void *FT_getFileContents(const char *pcPath)
    iStatus = Path_new((const char *)pcPath, &input);
    if (iStatus != SUCCESS)
    {
-      return FALSE;
+      return NULL;
    }
 
    iStatus = FT_traversePath(input, &oNFound);
    Path_free(input);
 
    if (iStatus != SUCCESS)
-      return FALSE;
+      return NULL;
 
    if (Node_getType(oNFound) == 1)
       return Node_getContents(oNFound);
 
-   return FALSE;
+   return NULL;
 }
 
 void *FT_replaceFileContents(const char *pcPath, void *pvNewContents,
