@@ -75,8 +75,6 @@ static int Node_compareString(const Node_T oNFirst,
 int Node_new(Path_T oPPath, Node_T oNParent, Node_T *poNResult,
              int type, void *addContents, size_t cSize)
 {
-   assert(poNResult != NULL);
-
    struct node *psNew;
    Path_T oPParentPath = NULL;
    Path_T oPNewPath = NULL;
@@ -85,6 +83,7 @@ int Node_new(Path_T oPPath, Node_T oNParent, Node_T *poNResult,
    int iStatus;
 
    assert(oPPath != NULL);
+   assert(poNResult != NULL);
 
    /* allocate space for a new node */
    psNew = malloc(sizeof(struct node));
