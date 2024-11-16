@@ -313,8 +313,8 @@ int FT_rmFile(const char *pcPath)
 void *FT_getFileContents(const char *pcPath)
 {
    Node_T oNFound = NULL;
+   Path_T input = NULL;
    int iStatus;
-   Path_T input;
 
    assert(pcPath != NULL);
 
@@ -347,7 +347,7 @@ void *FT_replaceFileContents(const char *pcPath, void *pvNewContents,
    assert(pcPath != NULL);
 
    if (iStatus != SUCCESS)
-      return FALSE;
+      return NULL;
 
    iStatus = FT_traversePath(input, &oNFound);
    Path_free(input);
