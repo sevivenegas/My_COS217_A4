@@ -43,23 +43,36 @@ size_t Node_free(Node_T oNNode);
 /* Returns the path object representing oNNode's absolute path. */
 Path_T Node_getPath(Node_T oNNode);
 
-/* returns the type (0 or 1) of the argument oNNode, which
-   represents either a file or directory */
+/*
+  Gets the type of oNNode (the node to check).
+  Returns 0 if the node is a directory and 1 if the node is a file.
+*/
 int Node_getType(Node_T oNNode);
 
-/* returns a void pointer to the contents of the input, oNNode
-   if oNNode is a file. */
+/*
+  Gets the content pointer of file node, oNNode.
+  Returns a pointer to the content if the node is a file and NULL if the
+  node is a directory.
+*/
 void *Node_getContents(Node_T oNNode);
 
-/* returns size_t of the contents of oNNode's file */
+/*
+  Retrieves the size_t size of the file oNNode.
+  Returns the size of the file's contents and 0 if the node is a
+  directory.
+*/
 size_t Node_getContentSize(Node_T oNNode);
 
-/* allows to set the contents of file oNNode with a void pointer
- *newContent */
+/*
+  Updates the content of a file node. oNNodeis the file node to update,
+  and newContent is a pointer to the new content.
+*/
 void Node_setContents(Node_T oNNode, void *newContent);
 
-/* allows to set the size, newSize, of the contents of the file
-   oNNode */
+/*
+  Updates the size of the file contents. oNNode is the file node to
+  update and newSize the new size of the content in bytes.
+*/
 void Node_setContentSize(Node_T oNNode, size_t newSize);
 
 /*

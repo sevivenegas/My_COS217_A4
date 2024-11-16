@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------*/
-/* nodeFT.c                                                           */
+/* NodeFT.c                                                           */
 /* Author: Sevastian Venegas & Neha Ayyalapu                          */
 /*--------------------------------------------------------------------*/
 
@@ -28,8 +28,9 @@ struct node
 };
 
 /*
-  Links new child oNChild into oNParent's children array at index
-  ulIndex. Returns SUCCESS if the new child was added successfully,
+  Inserts new child oNChild into oNParent's (which must be a directory)
+  children array at index ulIndex.
+  Returns SUCCESS if the new child was added successfully,
   or  MEMORY_ERROR if allocation fails adding oNChild to the array.
 */
 static int Node_addChild(Node_T oNParent, Node_T oNChild,
@@ -37,6 +38,7 @@ static int Node_addChild(Node_T oNParent, Node_T oNChild,
 {
    assert(oNParent != NULL);
    assert(oNChild != NULL);
+
    /* a parent must be a directory */
    assert(oNParent->type == 0);
 

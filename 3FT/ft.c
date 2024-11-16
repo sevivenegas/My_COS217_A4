@@ -10,7 +10,6 @@
 #include "nodeFT.h"
 #include "path.h"
 #include "ft.h"
-/* change to something #include "checkerDT.h" */
 
 /* 1. a flag for being in an initialized state (TRUE) or not (FALSE) */
 static boolean bIsInitialized;
@@ -19,20 +18,25 @@ static Node_T oNRoot;
 /* 3. a counter of the number of nodes in the hierarchy */
 static size_t ulCount;
 
-/* helper method to traverse path given oPPath and pointer to
-   poNFurthest and returns an int ____ */
-static int FT_traversePath(Path_T oPPath, Node_T *poNFurthest);
-
-/* helper method to traverse path given pcPath and pointer to
-   poNResult and returns an int ____ */
+/* Finds a node in the file tree based on the given path pcPath.
+   If the node exists, stores it in `poNResult`. Returns 0 if successful
+   and returns an error code if the tree is not initialized, the path is
+   invalid, or the node cannot be found.
+ */
 static int FT_findNode(const char *pcPath, Node_T *poNResult);
 
-/* helper method to _______ given oNNode and pointer to
-   pulAcc */
+/* Traverses a path represented by oPPath. Finds the furthest valid node
+   along the path and stores it in poNFurthest. Returns 0 if traversal
+   succeeds, or an error otherwise.
+ */
+static int FT_traversePath(Path_T oPPath, Node_T *poNFurthest);
+
+/* Accumulates total string length of oNNode's path. Uses pulAcc as an
+   in-out parameter and always adds one addition byte to the sum. */
 static void FT_strlenAccumulate(Node_T oNNode, size_t *pulAcc);
 
-/* helper method to _______ given oNNode and pointer to
-   pcAcc */
+/* Appends oNNode's path onto pcAcc, and always adds one newline at the
+   end of the concatenated string. */
 static void FT_strcatAccumulate(Node_T oNNode, char *pcAcc);
 
 int FT_insertDir(const char *pcPath)
@@ -420,8 +424,12 @@ int FT_destroy(void)
    return SUCCESS;
 }
 
-/* as explained above, this is a static helper function that located
-   a node given pcPath and poNResult and returns an int */
+/* As explained above, a static helper function that:
+   Finds a node in the file tree based on the given path pcPath.
+   If the node exists, stores it in `poNResult`. Returns 0 if successful
+   and returns an error code if the tree is not initialized, the path is
+   invalid, or the node cannot be found.
+ */
 static int FT_findNode(const char *pcPath, Node_T *poNResult)
 {
    Path_T oPPath = NULL;
@@ -471,8 +479,10 @@ static int FT_findNode(const char *pcPath, Node_T *poNResult)
    return SUCCESS;
 }
 
-/* as explained above, this is a static helper function that traverses
-   a node given oPPath and poNFurthest and returns an int */
+/* As explained above, a static helper function that:
+   Traverses a path represented by oPPath. Finds the furthest valid node
+   along the path and stores it in poNFurthest. Returns 0 if traversal
+   succeeds, or an error otherwise. */
 static int FT_traversePath(Path_T oPPath, Node_T *poNFurthest)
 {
    int iStatus;
@@ -555,11 +565,31 @@ static int FT_traversePath(Path_T oPPath, Node_T *poNFurthest)
    return SUCCESS;
 }
 
-/*
-  Performs a pre-order traversal of the tree rooted at n,
-  inserting each payload to DynArray_T d beginning at index i.
-  Returns the next unused index in d after the insertion(s).
-*/
+/* As explained above, a static helper function that:
+   Accumulates total string length of oNNode's path. Uses pulAcc as an
+   in-out parameter and always adds one addition byte to the sum. */
+static void FT_strlenAccumulate(Node_T oNNode, size_t *pulAcc)
+{
+   assert(pulAcc != NULL);
+
+   if (oNNode != NULL)
+      *pulAcc += (Path_getStrLength(Node_getPath(oNNode)) + 1);
+}
+
+/* As explained above, a static helper function that:
+   Appends oNNode's path onto pcAcc, and always adds one newline at the
+   end of the concatenated string. */
+static void FT_strcatAccumulate(Node_T oNNode, char *pcAcc)
+{
+   assert(pcAcc != NULL);
+
+   if (oNNode != NULL)
+   {
+      strcat(pcAcc, Path_getPathname(Node_getPath(oNNode)));
+      strcat(pcAcc, "\n");
+   }
+}
+
 static size_t FT_preOrderTraversal(Node_T n, DynArray_T d, size_t i)
 {
    size_t c;
@@ -624,33 +654,4 @@ char *FT_toString(void)
    DynArray_free(nodes);
 
    return result;
-}
-
-/*
-  Alternate version of strlen that uses pulAcc as an in-out parameter
-  to accumulate a string length, rather than returning the length of
-  oNNode's path, and also always adds one addition byte to the sum.
-*/
-static void FT_strlenAccumulate(Node_T oNNode, size_t *pulAcc)
-{
-   assert(pulAcc != NULL);
-
-   if (oNNode != NULL)
-      *pulAcc += (Path_getStrLength(Node_getPath(oNNode)) + 1);
-}
-
-/*
-  Alternate version of strcat that inverts the typical argument
-  order, appending oNNode's path onto pcAcc, and also always adds one
-  newline at the end of the concatenated string.
-*/
-static void FT_strcatAccumulate(Node_T oNNode, char *pcAcc)
-{
-   assert(pcAcc != NULL);
-
-   if (oNNode != NULL)
-   {
-      strcat(pcAcc, Path_getPathname(Node_getPath(oNNode)));
-      strcat(pcAcc, "\n");
-   }
 }
