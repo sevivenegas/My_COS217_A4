@@ -614,7 +614,7 @@ static size_t FT_preOrderTraversal(Node_T n, DynArray_T d, size_t i)
          assert(iStatus == SUCCESS);
          if (Node_getType(oNChild) == 1)
          {
-            DynArray_set(d, i, oNChild);
+            (void)DynArray_set(d, i, oNChild);
             i++;
          }
       }
