@@ -350,14 +350,13 @@ int FT_stat(const char *pcPath, boolean *pbIsFile, size_t *pulSize)
       return iStatus;
 
    iStatus = FT_findNode(pcPath, &oNFound, 0);
-   if (iStatus == NO_SUCH_PATH)
-   {
+   /* if (iStatus == NO_SUCH_PATH) {
       return NO_SUCH_PATH;
-   }
+   } */
 
-   /* iStatus = FT_traversePath(input, &oNFound);
+   iStatus = FT_traversePath(input, &oNFound);
    if (iStatus != SUCCESS)
-      return iStatus; */
+      return iStatus;
 
    /*success cases*/
    if (Node_getType(oNFound) == 0)
