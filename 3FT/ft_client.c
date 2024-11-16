@@ -205,8 +205,6 @@ int main(void)
    assert(FT_stat("1root/2d", &bIsFile, &l) == SUCCESS);
    assert(bIsFile == FALSE);
    assert(l == ARRLEN);
-   fprintf(stderr, "hello");
-   fprintf(stderr, FT_stat("1root/H", &bIsFile, &l));
    assert(FT_stat("1root/H", &bIsFile, &l) == NO_SUCH_PATH);
    assert(bIsFile == FALSE);
    assert(l == ARRLEN);
